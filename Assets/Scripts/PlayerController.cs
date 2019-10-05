@@ -13,7 +13,17 @@ public class PlayerController : MonoBehaviour
             Vector2 inNormal = Vector2.up;
             Vector2 reflection = Vector2.Reflect(inDirection, inNormal);
             movementController.AddForce(reflection * 10.0f);
+        } else if (attackType == AttackType.Punch) {
+            Vector2 inDirection = (point - (Vector2)transform.position).normalized;
+            Vector2 inNormal = Vector2.up;
+            Vector2 reflection = Vector2.Reflect(inDirection, inNormal);
+            movementController.AddForce(reflection * 2.0f);
         }
+    }
+
+    public void ReceiveAttack()
+    {
+        Debug.Log("Got hit");
     }
 
     // Start is called before the first frame update
@@ -29,16 +39,6 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        //GameObject other = collision.gameObject;
-        //if (other.CompareTag("Enemy")) {
-        //    if (!movementController.IsGrounded) {
-        //        if (other.GetComponent<Vulnerable>().RecieveAttack(AttackType.Jump)) {
-        //            other.GetComponent<EnemyController>().ReceiveAttack(AttackType.Jump, collision.collider, collision.contacts[0].point);
-        //        }
-        //    }
-        //    if (inputProvider.JumpDown) movementController.Jump();
-        //}
-
         if (collision.collider.gameObject.tag == "Enemy") {
             Vulnerable consumer = collision.collider.gameObject.GetComponent<Vulnerable>();
             if (consumer) {

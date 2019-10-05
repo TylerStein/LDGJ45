@@ -12,10 +12,27 @@ public class BasicEnemyController : EnemyController
     [SerializeField] public AwarenessProvider awarenessProvider;
 
     [SerializeField] private int moveDirection = 1;
+    [SerializeField] private float attackCooldown = 1f;
+    [SerializeField] private float attackTimer = 0;
 
     public override void ReceiveAttack(AttackType attackType, Collider2D collider, Vector2 point) {
         // Make the player bounce off the head
         awarenessProvider.Player.OnSuccessfulAttack(attackType, this, point);
+    }
+
+    public override void GiveAttack()
+    {
+        Vector2 collideBoxOrigin = new Vector2(moveDirection * 0.5f + transform.position.x, transform.position.y);
+        Collider2D collider = Physics2D.OverlapBox(collideBoxOrigin, new Vector2(0.5f, 0.2f), 0f, LayerMask.NameToLayer("Player"));
+
+        if (collider == null)
+            return;
+
+        PlayerController p = collider.gameObject.GetComponent<PlayerController>();
+        if (p)
+        {
+            p.ReceiveAttack();
+        }
     }
 
     // Update is called once per frame
@@ -25,14 +42,21 @@ public class BasicEnemyController : EnemyController
         if (Mathf.Sign(distanceToPlayer) != moveDirection) {
             moveDirection = moveDirection * -1;
         }
-  
-        if (distanceToPlayer > 2f) {
+
+        if (attackTimer > 0)
+        {
+            attackTimer -= Time.deltaTime;
+            if (attackTimer < 0)
+                attackTimer = 0;
+        }
+
+        if (distanceToPlayer > 1.5f) {
             movementController.Move(1.0f);
-        } else if (distanceToPlayer < -2f) {
+        } else if (distanceToPlayer < -1.5f) {
             movementController.Move(-1.0f);
-        } else {
-            // get hopping when at the spot
-            movementController.Jump();
+        } else if(attackTimer == 0){
+            GiveAttack();
+            attackTimer = attackCooldown;
         }
     }
 }
