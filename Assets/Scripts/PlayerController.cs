@@ -39,8 +39,8 @@ public class PlayerController : MonoBehaviour
         //    if (inputProvider.JumpDown) movementController.Jump();
         //}
 
-        if (collision.gameObject.tag == "Enemy") {
-            Vulnerable consumer = collision.gameObject.GetComponentInChildren<Vulnerable>();
+        if (collision.collider.gameObject.tag == "Enemy") {
+            Vulnerable consumer = collision.collider.gameObject.GetComponent<Vulnerable>();
             if (consumer) {
                 if (!movementController.IsGrounded) consumer.RecieveAttack(AttackType.Jump, collision.contacts[0].point);
             }

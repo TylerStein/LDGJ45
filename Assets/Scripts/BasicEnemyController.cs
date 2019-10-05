@@ -15,8 +15,7 @@ public class BasicEnemyController : EnemyController
 
     public override void ReceiveAttack(AttackType attackType, Collider2D collider, Vector2 point) {
         // Make the player bounce off the head
-        Vector2 inDirection = (point - (Vector2)awarenessProvider.Player.transform.position).normalized;
-        awarenessProvider.Player.movementController.AddForce(Vector2.Reflect(inDirection, Vector2.up) * 4.0f);
+        awarenessProvider.Player.OnSuccessfulAttack(attackType, this, point);
     }
 
     // Update is called once per frame
