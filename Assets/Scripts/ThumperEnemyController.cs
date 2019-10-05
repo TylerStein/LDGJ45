@@ -23,7 +23,12 @@ public class ThumperEnemyController : EnemyController
     }
 
     public override void ReceiveAttack(AttackType attackType, Collider2D collider, Vector2 point) {
-        Debug.Log("Thumper.Ouch!");
+        Debug.Log("Thumper Receive Attack");
+    }
+
+    public override void GiveAttack() {
+        movementController.ClearVelocity();
+        Debug.Log("Thumper Give Attack");
     }
 
     // Update is called once per frame
@@ -46,6 +51,15 @@ public class ThumperEnemyController : EnemyController
         if (thumperTick < thumperDelay && movementController.IsAtHoverHeight) {
             thumperTick += Time.deltaTime;
             if (thumperTick >= thumperDelay) thumperTick = thumperDelay;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.tag == "Player") {
+            // is beneath
+            if (collision.contacts[0].point.y < transform.position.y && movementController.Velocity.y < 0.01f) {
+                GiveAttack();
+            }
         }
     }
 }

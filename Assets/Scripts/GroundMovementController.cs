@@ -18,6 +18,9 @@ public class GroundMovementController : MonoBehaviour
     // Int defines direction of wall, 0 means none
     public int TouchingWallDirection { get { return _touchingWallDirection; } }
 
+    // Rigidbody's current velocity
+    public Vector2 Velocity { get { return _rigidbody.velocity;  } }
+
 
     [SerializeField] public GroundMovementSettings movementSettings;
 
