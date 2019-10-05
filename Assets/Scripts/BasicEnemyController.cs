@@ -13,7 +13,7 @@ public class BasicEnemyController : EnemyController
 
     [SerializeField] private int moveDirection = 1;
     [SerializeField] private float attackCooldown = 1f;
-    private float attackTimer = 0;
+    [SerializeField] private float attackTimer = 0;
 
     public override void ReceiveAttack(AttackType attackType, Collider2D collider, Vector2 point) {
         // Make the player bounce off the head
@@ -22,7 +22,7 @@ public class BasicEnemyController : EnemyController
 
     public override void GiveAttack()
     {
-        Vector2 collideBoxOrigin = new Vector2(moveDirection * 0.5f, 0);
+        Vector2 collideBoxOrigin = new Vector2(moveDirection * 0.5f + transform.position.x, transform.position.y);
         Collider2D collider = Physics2D.OverlapBox(collideBoxOrigin, new Vector2(0.5f, 0.2f), 0f, LayerMask.NameToLayer("Player"));
 
         if (collider == null)
@@ -49,7 +49,6 @@ public class BasicEnemyController : EnemyController
             if (attackTimer < 0)
                 attackTimer = 0;
         }
-        Debug.DrawLine(transform.position + new Vector3((moveDirection * 0.5f) - 0.5f, 0), transform.position + new Vector3((moveDirection * 0.5f) + 0.5f, 0), Color.green);
 
         if (distanceToPlayer > 1.5f) {
             movementController.Move(1.0f);

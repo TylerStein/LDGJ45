@@ -333,7 +333,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 2.75508e-40, w: -9.84e-43}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -1083,6 +1083,7 @@ MonoBehaviour:
   awarenessProvider: {fileID: 1634616317}
   moveDirection: 1
   attackCooldown: 2
+  attackTimer: 0
 --- !u!114 &1634616320
 MonoBehaviour:
   m_ObjectHideFlags: 0
