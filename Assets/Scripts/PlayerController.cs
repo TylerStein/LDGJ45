@@ -16,6 +16,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void ReceiveAttack()
+    {
+        Debug.Log("Got hit");
+    }
+
     // Start is called before the first frame update
     void Start() {
 
@@ -29,16 +34,6 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        //GameObject other = collision.gameObject;
-        //if (other.CompareTag("Enemy")) {
-        //    if (!movementController.IsGrounded) {
-        //        if (other.GetComponent<Vulnerable>().RecieveAttack(AttackType.Jump)) {
-        //            other.GetComponent<EnemyController>().ReceiveAttack(AttackType.Jump, collision.collider, collision.contacts[0].point);
-        //        }
-        //    }
-        //    if (inputProvider.JumpDown) movementController.Jump();
-        //}
-
         if (collision.gameObject.tag == "Enemy") {
             Vulnerable consumer = collision.gameObject.GetComponentInChildren<Vulnerable>();
             if (consumer) {
