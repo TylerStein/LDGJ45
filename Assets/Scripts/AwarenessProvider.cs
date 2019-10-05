@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class AwarenessProvider : MonoBehaviour
 {
-    [SerializeField] public Transform playerTransform;
+    [SerializeField] private PlayerController _playerController;
     [SerializeField] private RaycastHit2D[] _raycastHits = new RaycastHit2D[4];
 
-    public void Start() {
-        if (!playerTransform) playerTransform = FindObjectOfType<PlayerController>().transform;
+    public PlayerController Player { get { return _playerController; } }
+
+    public void Awake() {
+        if (!_playerController) _playerController = FindObjectOfType<PlayerController>();
     }
 
     public int GetHorizontalDirectionToPlayer() {
@@ -16,7 +18,7 @@ public class AwarenessProvider : MonoBehaviour
     }
 
     public float GetHorizontalDistanceToPlayer() {
-        return (playerTransform.position - transform.position).x;
+        return (_playerController.transform.position - transform.position).x;
     }
 
     public bool HorizontalDistanceToNearestCollider(out float distance, float direction, float radius = 0.99f, int layerMask = 1 << 0, float maxDistance = 100f) {
