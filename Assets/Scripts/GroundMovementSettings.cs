@@ -28,12 +28,14 @@ public class GroundMovementSettings : ScriptableObject
     [Tooltip("Dampen ramp to reach air move speed")]
     [SerializeField] public float airMoveSmoothing = 0.05f;
 
+    [Tooltip("Allow dampening of horizontal air velocity")]
+    [SerializeField] public bool dampenAirMovement = false;
+
     [Tooltip("Dampen ramp to stopping horizontally in the air")]
     [SerializeField] public float airStopSmoothing = 0.07f;
 
     [Tooltip("Movement Velocity in Air (meters/s)")]
     [SerializeField] public float airMoveVelocity = 2.0f;
-
 
     [Header("Contact Distances")]
 

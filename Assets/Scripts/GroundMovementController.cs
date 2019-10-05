@@ -103,7 +103,7 @@ public class GroundMovementController : MonoBehaviour
            if (_currentVelocity.x < 0.01f) _currentVelocity.Set(0, _currentVelocity.y);
            _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, targetVelocity, ref _currentVelocity, movementSettings.groundStopSmoothing);
 
-        } else if (movementSettings.canMoveInAir) {
+        } else if (movementSettings.dampenAirMovement) {
            Vector2 targetVelocity = new Vector2(0, _rigidbody.velocity.y);
             if (_currentVelocity.x < 0.01f) _currentVelocity.Set(0, _currentVelocity.y);
             _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, targetVelocity, ref _currentVelocity, movementSettings.airStopSmoothing);
