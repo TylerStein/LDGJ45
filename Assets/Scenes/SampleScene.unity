@@ -965,9 +965,10 @@ GameObject:
   - component: {fileID: 1634616320}
   - component: {fileID: 1634616318}
   - component: {fileID: 1634616317}
+  - component: {fileID: 1634616319}
   m_Layer: 0
   m_Name: BasicEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1019,6 +1020,19 @@ MonoBehaviour:
   awarenessProvider: {fileID: 1634616317}
   moveDirection: 1
   moveToXTarget: 0
+--- !u!114 &1634616319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634616315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f1c23936469ec746a969fe49d823cdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vulnerableTo: 0
 --- !u!114 &1634616320
 MonoBehaviour:
   m_ObjectHideFlags: 0

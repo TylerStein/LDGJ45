@@ -20,4 +20,19 @@ public class PlayerController : MonoBehaviour
 
         if (inputProvider.JumpDown) movementController.Jump();
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        GameObject other = collision.gameObject;
+        if(other.CompareTag("Enemy"))
+        {
+            if (!movementController.IsGrounded)
+            {
+                if (other.GetComponent<Vulnerable>().RecieveAttack(AttackType.Jump))
+                {
+
+                }
+            }
+        }
+    }
 }
