@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fa4f543213c1744c93d6446f598a6de, type: 3}
+  m_Name: ThumperMovementSettings
+  m_EditorClassIdentifier: 
+  groundMoveVelocity: 10
+  groundMoveSmoothing: 0.05
+  groundStopSmoothing: 0.1
+  jumpForce: 52
+  canMoveInAir: 1
+  airMoveSmoothing: 0.03
+  dampenAirMovement: 0
+  airStopSmoothing: 0.03
+  airMoveVelocity: 2
+  minGroundDistance: 0.01
+  minCeilingDistance: 0.01
+  minWallDistance: 0.01
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  ceilingLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 0

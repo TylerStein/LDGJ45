@@ -13,6 +13,11 @@ public class PlayerController : MonoBehaviour
             Vector2 inNormal = Vector2.up;
             Vector2 reflection = Vector2.Reflect(inDirection, inNormal);
             movementController.AddForce(reflection * 10.0f);
+        } else if (attackType == AttackType.Punch) {
+            Vector2 inDirection = (point - (Vector2)transform.position).normalized;
+            Vector2 inNormal = Vector2.up;
+            Vector2 reflection = Vector2.Reflect(inDirection, inNormal);
+            movementController.AddForce(reflection * 2.0f);
         }
     }
 
@@ -34,8 +39,8 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.tag == "Enemy") {
-            Vulnerable consumer = collision.gameObject.GetComponentInChildren<Vulnerable>();
+        if (collision.collider.gameObject.tag == "Enemy") {
+            Vulnerable consumer = collision.collider.gameObject.GetComponent<Vulnerable>();
             if (consumer) {
                 if (!movementController.IsGrounded) consumer.RecieveAttack(AttackType.Jump, collision.contacts[0].point);
             }
