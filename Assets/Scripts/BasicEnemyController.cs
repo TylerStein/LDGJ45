@@ -22,8 +22,11 @@ public class BasicEnemyController : EnemyController
 
     public override void GiveAttack()
     {
-        Vector2 collideBoxOrigin = new Vector2(moveDirection * 0.4f, 0);
-        Collider2D collider = Physics2D.OverlapBox(collideBoxOrigin, new Vector2(0.2f, 0.2f), 0f, LayerMask.NameToLayer("Player"));
+        Vector2 collideBoxOrigin = new Vector2(moveDirection * 0.5f, 0);
+        Collider2D collider = Physics2D.OverlapBox(collideBoxOrigin, new Vector2(0.5f, 0.2f), 0f, LayerMask.NameToLayer("Player"));
+
+        if (collider == null)
+            return;
 
         PlayerController p = collider.gameObject.GetComponent<PlayerController>();
         if (p)
@@ -46,10 +49,11 @@ public class BasicEnemyController : EnemyController
             if (attackTimer < 0)
                 attackTimer = 0;
         }
-  
-        if (distanceToPlayer > 2f) {
+        Debug.DrawLine(transform.position + new Vector3((moveDirection * 0.5f) - 0.5f, 0), transform.position + new Vector3((moveDirection * 0.5f) + 0.5f, 0), Color.green);
+
+        if (distanceToPlayer > 1.5f) {
             movementController.Move(1.0f);
-        } else if (distanceToPlayer < -2f) {
+        } else if (distanceToPlayer < -1.5f) {
             movementController.Move(-1.0f);
         } else if(attackTimer == 0){
             GiveAttack();
