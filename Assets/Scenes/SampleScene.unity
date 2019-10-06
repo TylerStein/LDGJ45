@@ -1184,6 +1184,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1274,6 +1275,26 @@ MonoBehaviour:
   attack1: Fire1
   attack2: Fire2
   attack3: Fire3
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b1530b103cafcf40a265465a699ee9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followTransform: {fileID: 1448601360}
+  targetZDistance: -8
+  followDampening: 50
+  shakeOffset: {x: 0, y: 0, z: 0}
+  _moveVelocity: {x: 0, y: 0, z: 0}
+  shakeAmplitude: 0.15
+  shakeFrequency: 0.05
+  shakeDuration: 0.15
 --- !u!1 &977681373
 GameObject:
   m_ObjectHideFlags: 0
@@ -1786,6 +1807,7 @@ MonoBehaviour:
   abilityController: {fileID: 1448601363}
   uiController: {fileID: 1448601364}
   vfxController: {fileID: 1448601365}
+  cameraController: {fileID: 963194230}
   health: 4
   playerSprite: {fileID: 1710582154}
   animator: {fileID: 1710582152}
