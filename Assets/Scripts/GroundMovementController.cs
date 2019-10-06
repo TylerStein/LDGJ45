@@ -66,6 +66,12 @@ public class GroundMovementController : MonoBehaviour
 
 
     public void Jump(bool canJumpInAir = false) {
+        if (_isTouchingCeiling) return;
+
+        if (canJumpInAir) _shouldJump = true;
+        else if (_isGrounded) _shouldJump = true;
+        else if (movementSettings.enableWallJump && _touchingWallDirection != 0) _shouldJump = true;
+
         if ((_isGrounded || canJumpInAir) && !_isTouchingCeiling) _shouldJump = true;
     }
 
@@ -74,8 +80,10 @@ public class GroundMovementController : MonoBehaviour
         else if (direction < 0) _lastDirection = -1f;
 
         // prevent wall sticking
-        if (Mathf.Sign(direction) == _touchingWallDirection) {
-            direction = 0;
+        if (!movementSettings.enableWallJump) {
+            if (Mathf.Sign(direction) == _touchingWallDirection) {
+                direction = 0;
+            }
         }
 
         // prevent affecting velocity with move when input is 0
@@ -96,8 +104,16 @@ public class GroundMovementController : MonoBehaviour
     public void Update() {
         if (_shouldJump) {
             _shouldJump = false;
-            _isGrounded = false;
-            _rigidbody.AddForce(new Vector2(0f, movementSettings.jumpForce));
+
+            if (_isGrounded || _touchingWallDirection == 0) {
+                _isGrounded = false;
+                _rigidbody.AddForce(new Vector2(0f, movementSettings.jumpForce));
+            } else {
+                Move(-_touchingWallDirection);
+                _rigidbody.AddForce(new Vector2(movementSettings.jumpForce * 0.66f * -_touchingWallDirection, movementSettings.jumpForce * 0.66f));
+                _touchingWallDirection = 0;
+            }
+
         }
     }
 
