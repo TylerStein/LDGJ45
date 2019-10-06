@@ -8,9 +8,9 @@ public class HealthBarView : MonoBehaviour
     public List<Image> heartImages = new List<Image>();
 
     public void SetHealth(int health) {
-        if (health >= heartImages.Count) {
+        if (health > heartImages.Count) {
             Debug.LogWarning("Attempting to set health view to more hearts than available!");
-            health = heartImages.Count - 1;
+            health = heartImages.Count;
         } else if (health < 0) {
             Debug.LogWarning("Attempting to set health view to a negative value!");
             health = 0;

@@ -9,6 +9,9 @@ public class GroundMovementController : MonoBehaviour
     // Last direction of movement (by input)
     public float LastDirection { get { return _lastDirection; } }
 
+    // Is there anything beneath this
+    public bool IsBlocked { get { return _isBlocked; } }
+
     // Is the player colliding down
     public bool IsGrounded { get { return _isGrounded; } }
 
@@ -35,6 +38,7 @@ public class GroundMovementController : MonoBehaviour
     [SerializeField] private int _touchingWallDirection = 0;
     [SerializeField] private bool _isTouchingCeiling = false;
     [SerializeField] private bool _didMoveLastFrame = false;
+    [SerializeField] private bool _isBlocked = false;
 
 
     public void Start() {
@@ -57,6 +61,7 @@ public class GroundMovementController : MonoBehaviour
 
         updateTouchingCeiling();
         updateTouchingGround();
+        updateBlocked();
     }
 
 
@@ -101,6 +106,10 @@ public class GroundMovementController : MonoBehaviour
         _rigidbody.AddForce(force, ForceMode2D.Impulse);
     }
 
+    public void ClearVelocity() {
+        _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, Vector2.zero, ref _currentVelocity, 0.0001f);
+    }
+
     private void dampenMovement() {
         if (_isGrounded) {
            Vector2 targetVelocity = new Vector2(0, _rigidbody.velocity.y);
@@ -117,18 +126,18 @@ public class GroundMovementController : MonoBehaviour
     private void updateTouchingWalls() {
         if (_lastDirection < 0) {
             // looking left, test left first
-            if (isTouching(Vector2.left, movementSettings.minWallDistance, movementSettings.wallLayer)) {
+            if (isTouching(Vector2.left, movementSettings.minWallDistance * 1.1f, movementSettings.wallLayer)) {
                 _touchingWallDirection = -1;
-            } else if (isTouching(Vector2.right, movementSettings.minWallDistance, movementSettings.wallLayer)) {
+            } else if (isTouching(Vector2.right, movementSettings.minWallDistance * 1.1f, movementSettings.wallLayer)) {
                 _touchingWallDirection = 1;
             } else {
                 _touchingWallDirection = 0;
             }
         } else {
             // looking right, test right first
-            if (isTouching(Vector2.right, movementSettings.minWallDistance, movementSettings.wallLayer)) {
+            if (isTouching(Vector2.right, movementSettings.minWallDistance * 1.1f, movementSettings.wallLayer)) {
                 _touchingWallDirection = 1;
-            } else if (isTouching(Vector2.left, movementSettings.minWallDistance, movementSettings.wallLayer)) {
+            } else if (isTouching(Vector2.left, movementSettings.minWallDistance * 1.1f, movementSettings.wallLayer)) {
                 _touchingWallDirection = -1;
             } else {
                 _touchingWallDirection = 0;
@@ -137,11 +146,22 @@ public class GroundMovementController : MonoBehaviour
     }
 
     private void updateTouchingCeiling() {
-        _isTouchingCeiling = isTouching(Vector2.up, movementSettings.minCeilingDistance, movementSettings.ceilingLayer);
+        _isTouchingCeiling = isTouching(Vector2.up, movementSettings.minCeilingDistance * 1.1f, movementSettings.ceilingLayer);
     }
 
     private void updateTouchingGround() {
-        _isGrounded = isTouching(Vector2.down, movementSettings.minGroundDistance, movementSettings.groundLayer);
+        _isGrounded = isTouching(Vector2.down, movementSettings.minGroundDistance * 1.1f, movementSettings.groundLayer);
+    }
+
+    private void updateBlocked() {
+        int contactCount = Physics2D.BoxCastNonAlloc(_transform.position, Vector2.one * 0.99f, 0, Vector2.down, _contacts, movementSettings.minGroundDistance * 1.1f, 0);
+        for (int i = 0; i < contactCount; i++) {
+            if (_contacts[i].collider != null && _contacts[i].transform != transform) {
+                _isBlocked = true;
+                return;
+            }
+        }
+        _isBlocked = false;
     }
 
     private bool isTouching(Vector2 direction, float distance, int mask = 1 << 0) {

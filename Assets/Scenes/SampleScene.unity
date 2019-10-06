@@ -1182,7 +1182,7 @@ GameObject:
   m_Component:
   - component: {fileID: 860409039}
   - component: {fileID: 860409040}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: dot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1351,7 +1351,9 @@ MonoBehaviour:
   horizontalAxis: Horizontal
   verticalAxis: Vertical
   jumpButton: Jump
-  basicAttackButton: Fire1
+  attack1: Fire1
+  attack2: Fire2
+  attack3: Fire3
 --- !u!1 &977681373
 GameObject:
   m_ObjectHideFlags: 0
@@ -1742,9 +1744,10 @@ GameObject:
   - component: {fileID: 1448601358}
   - component: {fileID: 1448601363}
   - component: {fileID: 1448601364}
+  - component: {fileID: 1448601365}
   - component: {fileID: 1448601361}
   - component: {fileID: 1448601357}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: __PLAYER__
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1790,6 +1793,7 @@ MonoBehaviour:
   _touchingWallDirection: 0
   _isTouchingCeiling: 0
   _didMoveLastFrame: 0
+  _isBlocked: 0
 --- !u!114 &1448601359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1805,7 +1809,9 @@ MonoBehaviour:
   horizontalAxis: Horizontal
   verticalAxis: Vertical
   jumpButton: Jump
-  basicAttackButton: Fire1
+  attack1: Fire1
+  attack2: Fire2
+  attack3: Fire3
 --- !u!4 &1448601360
 Transform:
   m_ObjectHideFlags: 0
@@ -1858,6 +1864,7 @@ MonoBehaviour:
   movementController: {fileID: 1448601358}
   abilityController: {fileID: 1448601363}
   uiController: {fileID: 1448601364}
+  vfxController: {fileID: 1448601365}
   health: 4
 --- !u!114 &1448601363
 MonoBehaviour:
@@ -1874,15 +1881,20 @@ MonoBehaviour:
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 512
+  controller: {fileID: 1448601362}
+  hasKick: 1
   hasPunch: 1
   punchDistance: 1.5
-  punchLungeForce: 4
-  hasSlam: 0
+  punchLungeForce: 0
+  hasSlam: 1
+  slamForce: 10
+  isSlamming: 0
   _overlaps:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  waitForNotBlocked: 0
 --- !u!114 &1448601364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1896,6 +1908,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBarView: {fileID: 1934176474}
+--- !u!114 &1448601365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1448601356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c998b622b9431448e99bd45e7f95bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  swipeVFX: {fileID: 8684112161917034655, guid: f6e7df775a8d8d34f93210bef28cb0b1,
+    type: 3}
 --- !u!1 &1634616315
 GameObject:
   m_ObjectHideFlags: 0
@@ -1962,6 +1988,9 @@ MonoBehaviour:
   wallLayerMask:
     serializedVersion: 2
     m_Bits: 256
+  attackLayerMask:
+    serializedVersion: 2
+    m_Bits: 1024
   movementController: {fileID: 1634616320}
   awarenessProvider: {fileID: 1634616317}
   moveDirection: 1
@@ -1990,6 +2019,7 @@ MonoBehaviour:
   _touchingWallDirection: 0
   _isTouchingCeiling: 0
   _didMoveLastFrame: 0
+  _isBlocked: 0
 --- !u!50 &1634616321
 Rigidbody2D:
   serializedVersion: 4
