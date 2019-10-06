@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CircleCollider2D))]
+[RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class GroundMovementController : MonoBehaviour
 {
@@ -60,7 +60,6 @@ public class GroundMovementController : MonoBehaviour
         _didMoveLastFrame = false;
 
         updateTouchingCeiling();
-        updateTouchingGround();
         updateBlocked();
     }
 
@@ -165,15 +164,17 @@ public class GroundMovementController : MonoBehaviour
         _isTouchingCeiling = isTouching(Vector2.up, movementSettings.minCeilingDistance * 1.1f, movementSettings.ceilingLayer);
     }
 
-    private void updateTouchingGround() {
-        _isGrounded = isTouching(Vector2.down, movementSettings.minGroundDistance * 1.1f, movementSettings.groundLayer);
-    }
-
     private void updateBlocked() {
-        int contactCount = Physics2D.BoxCastNonAlloc(_transform.position, Vector2.one * 0.99f, 0, Vector2.down, _contacts, movementSettings.minGroundDistance * 1.1f, 0);
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.ClearLayerMask();
+
+        int contactCount = _collider.Cast(Vector2.down, filter, _contacts, movementSettings.minGroundDistance);
         for (int i = 0; i < contactCount; i++) {
             if (_contacts[i].collider != null && _contacts[i].transform != transform) {
                 _isBlocked = true;
+                if (_contacts[i].collider.tag == "Ground") {
+                    _isGrounded = true;     
+                }
                 return;
             }
         }
@@ -181,7 +182,10 @@ public class GroundMovementController : MonoBehaviour
     }
 
     private bool isTouching(Vector2 direction, float distance, int mask = 1 << 0) {
-        int contactCount = Physics2D.BoxCastNonAlloc(_transform.position, Vector2.one * 0.99f, 0, direction, _contacts, distance, mask);
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.layerMask = mask;
+
+        int contactCount = _collider.Cast(direction, filter, _contacts, distance);
         for (int i = 0; i < contactCount; i++) {
             if (_contacts[i].collider != null) {
                 return true;

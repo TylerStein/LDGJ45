@@ -35,7 +35,8 @@ public abstract class Vulnerable : MonoBehaviour
     {
         if (incomingType == vulnerableTo && testAttack(point)) {
             owner.ReceiveAttack(incomingType, collider, point);
+            return true;
         }
-        return incomingType == vulnerableTo;
+        return false;
     }
 }
