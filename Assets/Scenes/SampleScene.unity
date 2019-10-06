@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!50 &89715564
 Rigidbody2D:
   serializedVersion: 4
@@ -238,12 +238,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d8dd191d5fda4b409c24e80b2c1db0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  awarenessProvider: {fileID: 89715566}
   didAttack: 0
   isSlamming: 0
   slamTick: 0
   slamHoldTick: 0
   movementController: {fileID: 89715567}
-  awarenessProvider: {fileID: 89715566}
   moveDirection: 1
 --- !u!4 &89715569
 Transform:
@@ -768,7 +768,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 4e-45}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -1937,7 +1937,7 @@ GameObject:
   - component: {fileID: 1634616318}
   - component: {fileID: 1634616317}
   m_Layer: 9
-  m_Name: BasicEnemy
+  m_Name: BoxerEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1985,6 +1985,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00cb8180d8de32e4b86c29cc2a5ccfd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  awarenessProvider: {fileID: 1634616317}
   wallLayerMask:
     serializedVersion: 2
     m_Bits: 256
@@ -1992,10 +1993,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   movementController: {fileID: 1634616320}
-  awarenessProvider: {fileID: 1634616317}
-  moveDirection: 1
-  attackCooldown: 3
-  attackTimer: 0
 --- !u!114 &1634616320
 MonoBehaviour:
   m_ObjectHideFlags: 0

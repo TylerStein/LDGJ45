@@ -12,7 +12,6 @@ public class ThumperEnemyController : EnemyController
     [SerializeField] private float slamHoldTick = 0f;
 
     [SerializeField] public ThumperMovementController movementController;
-    [SerializeField] public AwarenessProvider awarenessProvider;
 
     [SerializeField] private int moveDirection = 1;
 
