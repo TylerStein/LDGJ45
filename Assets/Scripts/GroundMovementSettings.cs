@@ -16,6 +16,8 @@ public class GroundMovementSettings : ScriptableObject
     [Tooltip("Dampen ramp to stopping horizontally on the ground")]
     [SerializeField] public float groundStopSmoothing = 0.1f;
 
+    [Tooltip("Allow the player to stick to walls and jump off of them")]
+    [SerializeField] public bool enableWallJump = false;
 
     [Header("Air Movement")]
 
