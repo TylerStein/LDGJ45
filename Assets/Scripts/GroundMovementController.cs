@@ -65,7 +65,8 @@ public class GroundMovementController : MonoBehaviour
     }
 
     public void Move(float direction) {
-        _lastDirection = Mathf.Sign(_rigidbody.velocity.x);
+        if (direction > 0) _lastDirection = 1f;
+        else if (direction < 0) _lastDirection = -1f;
 
         // prevent wall sticking
         if (Mathf.Sign(direction) == _touchingWallDirection) {
