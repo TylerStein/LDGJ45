@@ -5,7 +5,8 @@ using UnityEngine;
    public  enum AttackType
     {
         Jump = 0,
-        Punch
+        Punch = 1,
+        Slam = 2
     }
 
 [RequireComponent(typeof(Collider2D))]

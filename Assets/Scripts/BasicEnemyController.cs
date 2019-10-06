@@ -7,6 +7,7 @@ using UnityEngine;
 public class BasicEnemyController : EnemyController
 {
     [SerializeField] public LayerMask wallLayerMask;
+    [SerializeField] public LayerMask attackLayerMask;
 
     [SerializeField] public GroundMovementController movementController;
     [SerializeField] public AwarenessProvider awarenessProvider;
@@ -18,13 +19,13 @@ public class BasicEnemyController : EnemyController
     public override void ReceiveAttack(AttackType attackType, Collider2D collider, Vector2 point) {
         // Make the player bounce off the head
         awarenessProvider.Player.OnSuccessfulAttack(attackType, this, point);
-        Debug.Log("Attacked by Player");
     }
 
     public override void GiveAttack()
     {
         Vector2 collideBoxOrigin = new Vector2(moveDirection * 0.5f + transform.position.x, transform.position.y);
-        Collider2D collider = Physics2D.OverlapBox(collideBoxOrigin, new Vector2(0.5f, 0.2f), 0f, LayerMask.NameToLayer("Player"));
+        Collider2D collider = Physics2D.OverlapBox(collideBoxOrigin, new Vector2(0.5f, 0.2f), 0f, attackLayerMask);
+
 
         if (collider == null)
             return;
@@ -32,8 +33,7 @@ public class BasicEnemyController : EnemyController
         PlayerController p = collider.gameObject.GetComponent<PlayerController>();
         if (p)
         {
-            p.ReceiveAttack();
-            Debug.Log("Punched Player");
+            p.ReceiveAttack(this);
             Debug.DrawLine(transform.position, p.transform.position, Color.red);
         }
     }
