@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] public PlayerInputProvider inputProvider;
     [SerializeField] public GroundMovementController movementController;
+    [SerializeField] public SpriteRenderer playerSprite;
     [SerializeField] public Animator animator;
 
     public void OnSuccessfulAttack(AttackType attackType, EnemyController enemy, Vector2 point) {
@@ -41,6 +42,9 @@ public class PlayerController : MonoBehaviour
         //animation
         animator.SetFloat("Velocity", Mathf.Abs(movementController.Velocity.x));
         animator.SetBool("Is_Grounded?", movementController.IsGrounded);
+        if (movementController.LastDirection > 0) playerSprite.flipX = true;
+        else playerSprite.flipX = false;
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {

@@ -195,7 +195,7 @@ AnimatorState:
   m_Motion: {fileID: 7400000, guid: 66bfedc152b57394db2a9e3a95f291e0, type: 2}
   m_Tag: 
   m_SpeedParameter: 
-  m_MirrorParameter: 
+  m_MirrorParameter: Face_Right
   m_CycleOffsetParameter: 
   m_TimeParameter: 
 --- !u!1101 &-1137092590014303405
@@ -259,6 +259,12 @@ AnimatorController:
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Is_Grounded?
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: Face_Right
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -385,7 +391,7 @@ AnimatorState:
   m_Motion: {fileID: 7400000, guid: 99b4f499f96d96c4d994c9dd4dee36bf, type: 2}
   m_Tag: 
   m_SpeedParameter: 
-  m_MirrorParameter: 
+  m_MirrorParameter: Face_Right
   m_CycleOffsetParameter: 
   m_TimeParameter: 
 --- !u!1101 &4098930373093352416
