@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerAbilityController : MonoBehaviour
 {
     public bool IsSlamming { get { return _isSlamming; } }
+    public Collider2D attackCollider;
 
     [Header("General")]
     [SerializeField] public LayerMask enemyLayerMask;
@@ -40,15 +41,17 @@ public class PlayerAbilityController : MonoBehaviour
         if (controller.movementController.IsGrounded) {
             _waitForGrounded = false;
             return;
-        }
+        } else if (_waitForGrounded) return;
 
         if (_waitForNotBlocked) {
             if (controller.movementController.IsBlocked) return;
             else _waitForNotBlocked = false;
         }
 
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.layerMask = enemyLayerMask;
 
-        int contacts = Physics2D.CircleCastNonAlloc(transform.position, 0.99f, controller.movementController.Velocity.normalized, _hits, 0.25f, enemyLayerMask);
+        int contacts = attackCollider.Cast(controller.movementController.Velocity.normalized, filter, _hits, 0.25f);
         for (int i = 0; i < contacts; i++) {
             if (_hits[i].collider.gameObject.tag == "Enemy") {
                 Vulnerable consumer = _hits[i].collider.gameObject.GetComponent<Vulnerable>();

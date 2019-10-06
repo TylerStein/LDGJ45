@@ -176,10 +176,13 @@ public class ThumperMovementController : MonoBehaviour
                 _isBlocked = true;
                 if (_contacts[i].collider.tag == "Ground") {
                     _isGrounded = true;
+                } else {
+                    _isGrounded = false;
                 }
                 return;
             }
         }
+        _isGrounded = false;
         _isBlocked = false;
     }
 

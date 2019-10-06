@@ -13,6 +13,8 @@ public class ThumperEnemyController : EnemyController
 
     [SerializeField] public ThumperMovementController movementController;
     [SerializeField] public AwarenessProvider awarenessProvider;
+    [SerializeField] public Animator animator;
+    [SerializeField] public SpriteRenderer spriteRenderer;
 
     [SerializeField] private int moveDirection = 1;
 
@@ -28,7 +30,7 @@ public class ThumperEnemyController : EnemyController
         Vector2 inDirection = ((Vector2)transform.position - point).normalized;
         movementController.AddForce(inDirection * 5.0f);
         awarenessProvider.Player.OnSuccessfulAttack(attackType, this, point);
-
+        animator.SetTrigger("Damage");
     }
 
     public override void GiveAttack() {
@@ -43,6 +45,10 @@ public class ThumperEnemyController : EnemyController
         if (Mathf.Sign(distanceToPlayer) != moveDirection) {
             moveDirection = moveDirection * -1;
         }
+
+        animator.SetFloat("Velocity", Mathf.Abs(movementController.Velocity.x));
+        animator.SetBool("Attacking", isSlamming);
+        spriteRenderer.flipX = moveDirection > 0;
 
         if (distanceToPlayer > movementController.thumperSettings.slamMaxHorizontalDistance) {
             movementController.Move(1f);

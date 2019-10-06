@@ -12,9 +12,9 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public abstract class Vulnerable : MonoBehaviour
 {
-    [SerializeField] public AttackType vulnerableTo;
     [SerializeField] public EnemyController owner;
     [SerializeField] public new Collider2D collider;
+    [SerializeField] public AttackType[] vulnerableTo = { AttackType.Jump };
 
     public abstract bool testAttack(Vector2 point);
 
@@ -33,7 +33,14 @@ public abstract class Vulnerable : MonoBehaviour
 
     public bool RecieveAttack(AttackType incomingType, Vector2 point)
     {
-        if (incomingType == vulnerableTo && testAttack(point)) {
+        bool inList = false;
+        for (int i = 0; i < vulnerableTo.Length; i++) {
+            if (incomingType == vulnerableTo[i]) {
+                inList = true;
+                break;
+            }
+        }
+        if (inList && testAttack(point)) {
             owner.ReceiveAttack(incomingType, collider, point);
             return true;
         }

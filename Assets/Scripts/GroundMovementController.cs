@@ -52,15 +52,10 @@ public class GroundMovementController : MonoBehaviour
     }
 
     public void FixedUpdate() {
-        updateTouchingWalls();
-
         if (!_didMoveLastFrame) {
             dampenMovement();
         }
         _didMoveLastFrame = false;
-
-        updateTouchingCeiling();
-        updateBlocked();
     }
 
 
@@ -101,15 +96,22 @@ public class GroundMovementController : MonoBehaviour
     }
 
     public void Update() {
+        updateTouchingWalls();
+        updateTouchingCeiling();
+        updateBlocked();
+
         if (_shouldJump) {
             _shouldJump = false;
 
             if (_isGrounded || _touchingWallDirection == 0) {
                 _isGrounded = false;
+                _isBlocked = false;
                 _rigidbody.AddForce(new Vector2(0f, movementSettings.jumpForce));
             } else {
                 Move(-_touchingWallDirection);
                 _rigidbody.AddForce(new Vector2(movementSettings.jumpForce * 0.66f * -_touchingWallDirection, movementSettings.jumpForce * 0.66f));
+                _isGrounded = false;
+                _isBlocked = false;
                 _touchingWallDirection = 0;
             }
 
@@ -168,7 +170,7 @@ public class GroundMovementController : MonoBehaviour
         ContactFilter2D filter = new ContactFilter2D();
         filter.ClearLayerMask();
 
-        int contactCount = _collider.Cast(Vector2.down, filter, _contacts, movementSettings.minGroundDistance);
+        int contactCount = _collider.Cast(Vector2.down, filter, _contacts, 0.1f);
         for (int i = 0; i < contactCount; i++) {
             if (_contacts[i].collider != null && _contacts[i].transform != transform) {
                 _isBlocked = true;
@@ -187,7 +189,7 @@ public class GroundMovementController : MonoBehaviour
 
         int contactCount = _collider.Cast(direction, filter, _contacts, distance);
         for (int i = 0; i < contactCount; i++) {
-            if (_contacts[i].collider != null) {
+            if (_contacts[i].collider != null && _contacts[i].collider != _collider) {
                 return true;
             }
         }
