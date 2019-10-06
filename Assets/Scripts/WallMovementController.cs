@@ -12,14 +12,17 @@ public class WallMovementController : MonoBehaviour
     [SerializeField] public WallMovementSettings movementSettings;
     [SerializeField] public new Rigidbody2D rigidbody;
     [SerializeField] public new Transform transform;
+    [SerializeField] public new Collider2D collider;
 
     public int LastDirection { get { return _lastMoveDirection; } }
-
-    [SerializeField] private float _forces = 0f;
-    [SerializeField] private float _velocityAdd = 0f;
+    public bool IsOnWall { get { return _isOnWall; } }
+    public bool IsBlocked { get { return _isBlocked;  } }
+    
     [SerializeField] private float _velocity = 0f;
     [SerializeField] private float _dampeningVelocity = 0f;
     [SerializeField] private int _lastMoveDirection = 0;
+    [SerializeField] private bool _isOnWall;
+    [SerializeField] private bool _isBlocked;
 
     [SerializeField] private Vector2 _right = Vector2.right;
     [SerializeField] private Vector2 _up = Vector2.up;
@@ -30,65 +33,66 @@ public class WallMovementController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (!rigidbody) rigidbody = GetComponent<Rigidbody2D>();
+        if (!transform) transform = GetComponent<Transform>();
+        if (!collider) collider = GetComponent<Collider2D>();
+
         rigidbody.isKinematic = true;
         rigidbody.freezeRotation = true;
         lastStickSide = stickSide;
         calculateDirections();
     }
 
-    // Update is called once per frame
-    void Update() {
+    void FixedUpdate() {
         if (stickSide != lastStickSide) {
             lastStickSide = stickSide;
             calculateDirections();
         }
 
-        calculateVelocity();
-
         applyMovement();
     }
 
-    public void Move(float force) {
-        _forces += force;
-    }
-
-    public void AddVelocity(float velocity) {
-        _velocityAdd += velocity;
-    }
-
-    public void SetVelocity(float velocity) {
-        _velocity = 0f;
-    }
-
-    private void calculateVelocity() {
-        float targetVelocity = _velocity + _velocityAdd + (_forces * Time.deltaTime);
-        _velocity = Mathf.SmoothDamp(_velocity, targetVelocity, ref _dampeningVelocity, movementSettings.surfaceMoveSmoothing);
-        _forces = 0f;
-        _velocityAdd = 0f;
+    public void Move(float direction) {
+        float desiredDirection = Mathf.Sign(direction);
+        _velocity = Mathf.SmoothDamp(_velocity, desiredDirection * movementSettings.surfaceMoveVelocity, ref _dampeningVelocity, movementSettings.surfaceMoveSmoothing);
     }
 
     private void applyMovement() {
 
         // Stick to surface
-        int contacts = Physics2D.BoxCastNonAlloc(transform.position, Vector2.one * castColliderSize, 0, _up * -1, _hits, movementSettings.surfacePull);
+        int contacts = Physics2D.BoxCastNonAlloc(transform.position, Vector2.one * castColliderSize, 0, _up * -1, _hits, movementSettings.surfacePull, movementSettings.surfaceLayerMask);
         float maxMoveDistance = movementSettings.surfacePull;
-        if (contacts > 0) {
-            maxMoveDistance = _hits[0].distance;
+        for (int i = 0; i < contacts; i++) {
+            if (_hits[i].collider != collider) {
+                maxMoveDistance = _hits[i].distance;
+                break;
+            }
         }
-        float moveDistance = Mathf.Clamp(maxMoveDistance, 0, movementSettings.surfacePull);
+        float moveDistance = Mathf.Clamp(maxMoveDistance, 0, movementSettings.surfacePull * Time.deltaTime);
         Vector2 moveDirection = _up * -1;
-        transform.position += (Vector3)moveDirection * Time.deltaTime * moveDistance;
-
-        // Slide along surface
-        float absVelocity = Mathf.Abs(_velocity);
-        moveDirection = _velocity > 0 ? _right : _right * -1f;
-        contacts = Physics2D.BoxCastNonAlloc(transform.position, Vector2.one * castColliderSize, 0, moveDirection, _hits, absVelocity);
-        maxMoveDistance = absVelocity;
-        if (contacts > 0) {
-            maxMoveDistance = _hits[0].distance;
+        if (moveDistance >= movementSettings.minWallDistance) {
+            transform.position += (Vector3)moveDirection * (moveDistance - movementSettings.minWallDistance * 0.9f);
+            _isOnWall = false;
+        } else {
+            _isOnWall = true;
         }
-        moveDistance = Mathf.Clamp(maxMoveDistance, 0, absVelocity);
-        transform.position += (Vector3)moveDirection * Time.deltaTime * moveDistance;
+
+        if (_isOnWall) {
+            // Slide along surface
+            float absVelocity = Mathf.Abs(_velocity);
+            moveDirection = _velocity > 0 ? _right : _right * -1f;
+            contacts = Physics2D.BoxCastNonAlloc(transform.position, Vector2.one * castColliderSize, 0, moveDirection, _hits, absVelocity, movementSettings.surfaceLayerMask);
+            maxMoveDistance = absVelocity;
+            for (int i = 0; i < contacts; i++) {
+                if (_hits[i].collider != collider) {
+                    maxMoveDistance = _hits[i].distance;
+                    break;
+                }
+            }
+            _isBlocked = (maxMoveDistance < absVelocity);
+            moveDistance = Mathf.Clamp(maxMoveDistance, 0, absVelocity);
+            transform.position += (Vector3)moveDirection * Time.deltaTime * moveDistance;
+        }
     }
 
     private void calculateDirections() {

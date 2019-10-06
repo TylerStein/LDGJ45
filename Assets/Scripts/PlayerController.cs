@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public PlayerAbilityController abilityController;
     [SerializeField] public PlayerUIController uiController;
     [SerializeField] public SpriteVFXController vfxController;
+    [SerializeField] public CameraController cameraController;
 
     public int health = 4;
     [SerializeField] public SpriteRenderer playerSprite;
@@ -33,12 +34,15 @@ public class PlayerController : MonoBehaviour
 
     public void ReceiveAttack(EnemyController enemy)
     {
+        cameraController.Shake(0.02f, 0.01f, 0.25f);
         Debug.Log("Got hit by " + enemy.gameObject.name);
         vfxController.SpawnSwipeVFX(transform.position, Vector3.zero, Color.white);
         health--;
         uiController.SetHealth(health);
         if (health <= 0) {
             Die();
+        } else {
+            animator.SetTrigger("Damage");
         }
     }
 

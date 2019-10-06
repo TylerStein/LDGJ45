@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86acc226e81dc1a42a7df92953534b81, type: 3}
   m_Name: ClimberMovementSettings
   m_EditorClassIdentifier: 
-  stickSide: 0
   surfaceLayerMask:
     serializedVersion: 2
-    m_Bits: 0
-  surfaceMoveVelocity: 10
-  surfaceMoveSmoothing: 0.05
+    m_Bits: 256
+  surfaceMoveVelocity: 2
+  surfaceMoveSmoothing: 0.2
   surfaceStopSmoothing: 0.1
+  surfacePull: 10
   minGroundDistance: 0.01
   minCeilingDistance: 0.01
   minWallDistance: 0.01
