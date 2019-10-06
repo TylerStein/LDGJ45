@@ -24,6 +24,11 @@ public class ThumperEnemyController : EnemyController
 
     public override void ReceiveAttack(AttackType attackType, Collider2D collider, Vector2 point) {
         Debug.Log("Thumper Receive Attack");
+        isSlamming = false;
+        movementController.ClearVelocity();
+        Vector2 inDirection = ((Vector2)transform.position - point).normalized;
+        movementController.AddForce(inDirection * 5.0f);
+
     }
 
     public override void GiveAttack() {
