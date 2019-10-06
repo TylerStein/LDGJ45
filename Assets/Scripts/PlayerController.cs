@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public SpriteVFXController vfxController;
 
     public int health = 4;
+    [SerializeField] public SpriteRenderer playerSprite;
+    [SerializeField] public Animator animator;
 
     public void OnSuccessfulAttack(AttackType attackType, EnemyController enemy, Vector2 point) {
         Debug.Log("hit " + enemy.gameObject.name + " with attack " + attackType.ToString());
@@ -35,6 +37,14 @@ public class PlayerController : MonoBehaviour
         vfxController.SpawnSwipeVFX(transform.position, Vector3.zero, Color.white);
         health--;
         uiController.SetHealth(health);
+        if (health <= 0) {
+            Die();
+        }
+    }
+
+    public void Die() {
+        health = 0;
+        animator.SetTrigger("Die");
     }
 
     // Start is called before the first frame update
@@ -49,10 +59,22 @@ public class PlayerController : MonoBehaviour
         if (inputProvider.JumpDown) movementController.Jump();
 
         if (inputProvider.Attack1) {
-            abilityController.Punch();
+            if (abilityController.Punch()) {
+                animator.SetTrigger("Punch");
+            }
         } else if (inputProvider.Attack2) {
-            abilityController.Slam();
+            if (abilityController.Slam()) {
+                animator.SetTrigger("Slam");
+            }
         }
+
+        //animation
+        animator.SetFloat("Velocity", Mathf.Abs(movementController.Velocity.x));
+        animator.SetBool("Is_Grounded?", movementController.IsGrounded);
+
+        if (movementController.LastDirection > 0) playerSprite.flipX = true;
+        else playerSprite.flipX = false;
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
