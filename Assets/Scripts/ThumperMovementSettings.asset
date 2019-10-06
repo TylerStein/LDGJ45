@@ -26,10 +26,10 @@ MonoBehaviour:
   minWallDistance: 0.01
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   ceilingLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   wallLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256

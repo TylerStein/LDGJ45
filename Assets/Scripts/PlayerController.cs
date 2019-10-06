@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] public PlayerInputProvider inputProvider;
     [SerializeField] public GroundMovementController movementController;
+    [SerializeField] public PlayerAbilityController abilityController;
 
     public void OnSuccessfulAttack(AttackType attackType, EnemyController enemy, Vector2 point) {
         if (attackType == AttackType.Jump) {
@@ -36,6 +37,10 @@ public class PlayerController : MonoBehaviour
         movementController.Move(inputProvider.Horizontal);
 
         if (inputProvider.JumpDown) movementController.Jump();
+
+        if (inputProvider.BasicAttackDown) {
+            abilityController.Punch(this);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
