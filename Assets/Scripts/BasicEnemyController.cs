@@ -18,6 +18,7 @@ public class BasicEnemyController : EnemyController
     public override void ReceiveAttack(AttackType attackType, Collider2D collider, Vector2 point) {
         // Make the player bounce off the head
         awarenessProvider.Player.OnSuccessfulAttack(attackType, this, point);
+        Debug.Log("Attacked by Player");
     }
 
     public override void GiveAttack()
@@ -32,6 +33,7 @@ public class BasicEnemyController : EnemyController
         if (p)
         {
             p.ReceiveAttack();
+            Debug.Log("Punched Player");
         }
     }
 
