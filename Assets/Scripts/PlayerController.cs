@@ -7,6 +7,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public PlayerInputProvider inputProvider;
     [SerializeField] public GroundMovementController movementController;
     [SerializeField] public PlayerAbilityController abilityController;
+    [SerializeField] public PlayerUIController uiController;
+
+    public int health = 4;
 
     public void OnSuccessfulAttack(AttackType attackType, EnemyController enemy, Vector2 point) {
         if (attackType == AttackType.Jump) {
@@ -25,11 +28,13 @@ public class PlayerController : MonoBehaviour
     public void ReceiveAttack()
     {
         Debug.Log("Got hit");
+        health--;
+        uiController.SetHealth(health);
     }
 
     // Start is called before the first frame update
     void Start() {
-
+        uiController.SetHealth(health);
     }
 
     // Update is called once per frame
