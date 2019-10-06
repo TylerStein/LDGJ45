@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(AwarenessProvider))]
 public class ThumperEnemyController : EnemyController
 {
-
+    [SerializeField] private bool didAttack = false;
     [SerializeField] private bool isSlamming = false;
     [SerializeField] private float slamTick = 0f;
     [SerializeField] private float slamHoldTick = 0f;
@@ -33,6 +33,8 @@ public class ThumperEnemyController : EnemyController
 
     public override void GiveAttack() {
         movementController.ClearVelocity();
+        Debug.DrawLine(transform.position, awarenessProvider.Player.transform.position, Color.red);
+        awarenessProvider.Player.ReceiveAttack();
         Debug.Log("Thumper Give Attack");
     }
 
@@ -49,6 +51,7 @@ public class ThumperEnemyController : EnemyController
             movementController.Move(-1f);
         } else if (movementController.IsAtHoverHeight && !isSlamming && slamTick == movementController.thumperSettings.slamDelay) {
             isSlamming = true;
+            didAttack = false;
             slamTick = 0f;
             slamHoldTick = 0f;
             movementController.ClearVelocityX();
@@ -85,7 +88,10 @@ public class ThumperEnemyController : EnemyController
         if (collision.gameObject.tag == "Player") {
             // is beneath
             if (collision.contacts[0].point.y < transform.position.y && movementController.Velocity.y < 0.01f) {
-                GiveAttack();
+                if (isSlamming && !didAttack) {
+                    didAttack = true;
+                    GiveAttack();
+                }
             }
         }
     }

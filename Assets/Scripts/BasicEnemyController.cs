@@ -34,6 +34,7 @@ public class BasicEnemyController : EnemyController
         {
             p.ReceiveAttack();
             Debug.Log("Punched Player");
+            Debug.DrawLine(transform.position, p.transform.position, Color.red);
         }
     }
 
@@ -56,9 +57,9 @@ public class BasicEnemyController : EnemyController
             movementController.Move(1.0f);
         } else if (distanceToPlayer < -1.5f) {
             movementController.Move(-1.0f);
-        } else if(attackTimer == 0){
-            GiveAttack();
+        } else if(attackTimer == 0) {
             attackTimer = attackCooldown;
+            GiveAttack();
         }
     }
 }

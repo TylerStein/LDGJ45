@@ -168,7 +168,7 @@ public class ThumperMovementController : MonoBehaviour
     }
 
     private void updateBlocked() {
-        int contactCount = Physics2D.BoxCastNonAlloc(_transform.position, Vector2.one * 0.99f, 0, Vector2.down, _contacts, movementSettings.minGroundDistance * 1.1f, 1 << 0);
+        int contactCount = Physics2D.BoxCastNonAlloc(_transform.position, Vector2.one * 0.99f, 0, Vector2.down, _contacts, movementSettings.minGroundDistance * 1.1f, 0);
         for (int i = 0; i < contactCount; i++) {
             if (_contacts[i].collider != null && _contacts[i].transform != transform) {
                 _isBlocked = true;
