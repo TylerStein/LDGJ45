@@ -21,11 +21,15 @@ public class PlayerAbilityController : MonoBehaviour
     [SerializeField] private float slamForce = 10f;
     [SerializeField] private bool isSlamming = false;
 
+    [Header("Wall Jump")]
+    [SerializeField] public bool enableWallJump = true;
+
     [SerializeField] private Collider2D[] _overlaps = new Collider2D[4];
     [SerializeField] private RaycastHit2D[] _hits = new RaycastHit2D[4];
     [SerializeField] private bool waitForNotBlocked = false;
 
     public void Update() {
+        controller.movementController.movementSettings.enableWallJump = enableWallJump;
         if (isSlamming && controller.movementController.IsBlocked) isSlamming = false;
     }
 
