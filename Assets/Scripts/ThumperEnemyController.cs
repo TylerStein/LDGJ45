@@ -48,6 +48,7 @@ public class ThumperEnemyController : EnemyController
 
         animator.SetFloat("Velocity", Mathf.Abs(movementController.Velocity.x));
         animator.SetBool("Attacking", isSlamming);
+        animator.SetBool("Grounded", movementController.IsGrounded);
         spriteRenderer.flipX = moveDirection > 0;
 
         if (distanceToPlayer > movementController.thumperSettings.slamMaxHorizontalDistance) {
