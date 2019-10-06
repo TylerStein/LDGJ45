@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
             movementController.AddForce(reflection * 2.0f);
             vfxController.SpawnSwipeVFX(enemy.transform.position, Vector3.zero, Color.green);
         }
+        cameraController.Shake(0.02f, 0.01f, 0.25f);
     }
 
     public void ReceiveAttack(EnemyController enemy)

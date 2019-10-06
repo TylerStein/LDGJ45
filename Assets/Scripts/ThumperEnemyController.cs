@@ -94,7 +94,7 @@ public class ThumperEnemyController : EnemyController
         if (collision.gameObject.tag == "Player") {
             // is beneath
             if (collision.contacts[0].point.y < transform.position.y && movementController.Velocity.y < 0.01f) {
-                if (isSlamming && !didAttack) {
+                if (isSlamming && !didAttack && !movementController.IsGrounded) {
                     didAttack = true;
                     GiveAttack();
                 }

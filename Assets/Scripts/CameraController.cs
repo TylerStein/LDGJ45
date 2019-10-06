@@ -8,6 +8,11 @@ public class CameraController : MonoBehaviour
     [SerializeField] public float targetZDistance = 8f;
     [SerializeField] public float followDampening = 0.1f;
 
+    [SerializeField] public float cameraLeftBoundary = -5.0f;
+    [SerializeField] public float cameraRightBoundary = 5.0f;
+    [SerializeField] public float cameraBottomBoundary = 3f;
+    [SerializeField] public float cameraTopBoundary = 6f;
+
     [SerializeField] public Vector3 shakeOffset = Vector3.zero;
 
     [SerializeField] private Vector3 _moveVelocity = Vector3.zero;
@@ -19,7 +24,12 @@ public class CameraController : MonoBehaviour
 
     private void FixedUpdate() {
 
-        Vector3 targetPosition = new Vector3(followTransform.position.x, followTransform.position.y, followTransform.position.z + targetZDistance);
+        Vector3 targetPosition = new Vector3(
+            Mathf.Clamp(followTransform.position.x, cameraLeftBoundary, cameraRightBoundary),
+            Mathf.Clamp(followTransform.position.y, cameraBottomBoundary, cameraTopBoundary), 
+            followTransform.position.z + targetZDistance
+        );
+
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref _moveVelocity, followDampening * Time.deltaTime) + shakeOffset;
     }
 

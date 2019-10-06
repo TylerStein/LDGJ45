@@ -14,6 +14,9 @@ public class BasicEnemyController : EnemyController
     [SerializeField] public Animator animator;
     [SerializeField] public SpriteRenderer spriteRenderer;
 
+    [SerializeField] private float punchMoveForce = 10.0f;
+    [SerializeField] private float punchDistance = 0.7f;
+    [SerializeField] private float stopDistance = 0.9f;
     [SerializeField] private int moveDirection = 1;
     [SerializeField] private float attackCooldown = 1f;
     [SerializeField] private float attackTimer = 0;
@@ -26,10 +29,10 @@ public class BasicEnemyController : EnemyController
 
     public override void GiveAttack()
     {
-        Vector2 collideBoxOrigin = new Vector2(moveDirection * 0.5f + transform.position.x, transform.position.y);
+        Vector2 collideBoxOrigin = new Vector2(moveDirection * punchDistance + transform.position.x, transform.position.y);
         Collider2D collider = Physics2D.OverlapBox(collideBoxOrigin, new Vector2(0.5f, 0.2f), 0f, attackLayerMask);
 
-        movementController.AddForce(Vector2.right * moveDirection * 10.0f);
+        movementController.AddForce(Vector2.right * moveDirection * punchMoveForce);
         animator.SetTrigger("Attack");
 
         if (collider == null)
@@ -61,9 +64,9 @@ public class BasicEnemyController : EnemyController
                 attackTimer = 0;
         }
 
-        if (distanceToPlayer > 1.5f) {
+        if (distanceToPlayer > stopDistance) {
             movementController.Move(1.0f);
-        } else if (distanceToPlayer < -1.5f) {
+        } else if (distanceToPlayer < -stopDistance) {
             movementController.Move(-1.0f);
         } else if(attackTimer == 0) {
             attackTimer = attackCooldown;
