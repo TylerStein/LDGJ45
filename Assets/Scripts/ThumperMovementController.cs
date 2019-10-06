@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class ThumperMovementController : MonoBehaviour
 {
-    public float hoverErrorMargin = 0.5f;
-    public float hoverHeight = 3.0f;
-    public float hoverHeightSpeed = 5.0f;
-    public float hoverHeightSmoothing = 0.4f;
-
-    public bool IsAtHoverHeight { get { return Mathf.Abs(hoverHeight - transform.position.y) < hoverErrorMargin; } }
+    public bool IsAtHoverHeight { get { return Mathf.Abs(thumperSettings.hoverHeight - transform.position.y) < thumperSettings.hoverErrorMargin; } }
 
     // Last direction of movement (by input)
     public float LastDirection { get { return _lastDirection; } }
+
+    public bool IsBlocked { get { return _isBlocked; } }
 
     // Is the player colliding down
     public bool IsGrounded { get { return _isGrounded; } }
@@ -27,6 +24,7 @@ public class ThumperMovementController : MonoBehaviour
     public Vector2 Velocity { get { return _rigidbody.velocity; } }
 
     [SerializeField] public GroundMovementSettings movementSettings;
+    [SerializeField] public ThumperSettings thumperSettings;
 
     [SerializeField] private Transform _transform;
     [SerializeField] private Collider2D _collider;
@@ -39,6 +37,7 @@ public class ThumperMovementController : MonoBehaviour
     [SerializeField] private int _touchingWallDirection = 0;
     [SerializeField] private bool _isTouchingCeiling = false;
     [SerializeField] private bool _didMoveLastFrame = false;
+    [SerializeField] private bool _isBlocked = false;
 
 
     public void Start() {
@@ -63,13 +62,7 @@ public class ThumperMovementController : MonoBehaviour
 
         updateTouchingCeiling();
         updateTouchingGround();
-    }
-
-
-    public void Slam() {
-        if (!_isGrounded) {
-            AddForce(Vector2.down * movementSettings.jumpForce);
-        }
+        updateBlocked();
     }
 
     public void Move(float direction) {
@@ -107,24 +100,28 @@ public class ThumperMovementController : MonoBehaviour
         _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, Vector2.zero, ref _currentVelocity, 0.0001f);
     }
 
+    public void ClearVelocityX() {
+        _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, new Vector2(0, _rigidbody.velocity.y), ref _currentVelocity, 0.0001f);
+    }
+
     public void AddForce(Vector2 force) {
         _rigidbody.AddForce(force, ForceMode2D.Impulse);
     }
 
     private void hover() {
-        float heightDifference = hoverHeight - transform.position.y;
+        float heightDifference = thumperSettings.hoverHeight - transform.position.y;
         Vector2 targetVelocity = Vector2.zero;
-        if (heightDifference > hoverErrorMargin) {
+        if (heightDifference > thumperSettings.hoverErrorMargin) {
             // go up
-            targetVelocity = new Vector2(_rigidbody.velocity.x, hoverHeightSpeed);
-        } else if (heightDifference < -hoverErrorMargin) {
+            targetVelocity = new Vector2(_rigidbody.velocity.x, thumperSettings.hoverHeightSpeed);
+        } else if (heightDifference < -thumperSettings.hoverErrorMargin) {
             // go down
-            targetVelocity = new Vector2(_rigidbody.velocity.x, -hoverHeightSpeed);
+            targetVelocity = new Vector2(_rigidbody.velocity.x, -thumperSettings.hoverHeightSpeed);
         } else {
             // hover here
             targetVelocity = new Vector2(_rigidbody.velocity.x, 0);
         }
-        _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, targetVelocity, ref _currentVelocity, hoverHeightSmoothing);
+        _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, targetVelocity, ref _currentVelocity, thumperSettings.hoverHeightSmoothing);
     }
 
     private void dampenMovement() {
@@ -168,6 +165,17 @@ public class ThumperMovementController : MonoBehaviour
 
     private void updateTouchingGround() {
         _isGrounded = isTouching(Vector2.down, movementSettings.minGroundDistance, movementSettings.groundLayer);
+    }
+
+    private void updateBlocked() {
+        int contactCount = Physics2D.BoxCastNonAlloc(_transform.position, Vector2.one * 0.99f, 0, Vector2.down, _contacts, movementSettings.minGroundDistance * 1.1f, 1 << 0);
+        for (int i = 0; i < contactCount; i++) {
+            if (_contacts[i].collider != null && _contacts[i].transform != transform) {
+                _isBlocked = true;
+                return;
+            }
+        }
+        _isBlocked = false;
     }
 
     private bool isTouching(Vector2 direction, float distance, int mask = 1 << 0) {

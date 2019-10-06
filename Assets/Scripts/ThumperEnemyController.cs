@@ -6,10 +6,10 @@ using UnityEngine;
 [RequireComponent(typeof(AwarenessProvider))]
 public class ThumperEnemyController : EnemyController
 {
-    [SerializeField] public float thumperDelay = 1.5f;
-    [SerializeField] private float thumperTick = 0f;
 
-    [SerializeField] public LayerMask wallLayerMask;
+    [SerializeField] private bool isSlamming = false;
+    [SerializeField] private float slamTick = 0f;
+    [SerializeField] private float slamHoldTick = 0f;
 
     [SerializeField] public ThumperMovementController movementController;
     [SerializeField] public AwarenessProvider awarenessProvider;
@@ -38,19 +38,41 @@ public class ThumperEnemyController : EnemyController
             moveDirection = moveDirection * -1;
         }
 
-        if (distanceToPlayer > 2f) {
-            movementController.Move(1.0f);
-        } else if (distanceToPlayer < -2f) {
-            movementController.Move(-1.0f);
-        } else if (movementController.IsAtHoverHeight && thumperTick == thumperDelay) {
-            // get slamming at this point
-            movementController.Slam();
-            thumperTick = 0f;
+        if (distanceToPlayer > movementController.thumperSettings.slamMaxHorizontalDistance) {
+            movementController.Move(1f);
+        } else if (distanceToPlayer < -movementController.thumperSettings.slamMaxHorizontalDistance) {
+            movementController.Move(-1f);
+        } else if (movementController.IsAtHoverHeight && !isSlamming && slamTick == movementController.thumperSettings.slamDelay) {
+            isSlamming = true;
+            slamTick = 0f;
+            slamHoldTick = 0f;
+            movementController.ClearVelocityX();
         }
 
-        if (thumperTick < thumperDelay && movementController.IsAtHoverHeight) {
-            thumperTick += Time.deltaTime;
-            if (thumperTick >= thumperDelay) thumperTick = thumperDelay;
+        if (isSlamming) {
+            if (slamHoldTick < movementController.thumperSettings.slamHoldDuration) {
+              //  movementController.AddForce(Vector2.down * slamForce);
+
+                float t = slamHoldTick / movementController.thumperSettings.slamHoldDuration;
+                movementController.AddForce(Vector2.down * movementController.thumperSettings.slamForce * t);
+
+                if (movementController.IsBlocked == true) {
+                    if (movementController.IsGrounded == false) {
+                        // stopped on something other than a ground piece
+                        isSlamming = false;
+                    }
+                }
+
+                slamHoldTick += Time.deltaTime;
+                if (slamHoldTick > movementController.thumperSettings.slamHoldDuration) slamHoldTick = movementController.thumperSettings.slamHoldDuration;
+            } else {
+                isSlamming = false;
+            }
+        } else if (slamTick < movementController.thumperSettings.slamDelay && movementController.IsAtHoverHeight) {
+            slamTick += Time.deltaTime;
+            if (slamTick >= movementController.thumperSettings.slamDelay) {
+                slamTick = movementController.thumperSettings.slamDelay;
+            }
         }
     }
 
