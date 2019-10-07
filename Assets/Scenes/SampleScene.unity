@@ -739,6 +739,21 @@ PrefabInstance:
       propertyPath: healthBarView
       value: 
       objectReference: {fileID: 1934176474}
+    - target: {fileID: 2587929584712949171, guid: e6c9993445d24744e9bc3ca42f8c45a5,
+        type: 3}
+      propertyPath: hasSlam
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2587929584712949171, guid: e6c9993445d24744e9bc3ca42f8c45a5,
+        type: 3}
+      propertyPath: hasPunch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2587929583951581992, guid: e6c9993445d24744e9bc3ca42f8c45a5,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 83ad350d753a061428797cd6b621c533, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6c9993445d24744e9bc3ca42f8c45a5, type: 3}
 --- !u!4 &5005511077679961299 stripped
@@ -830,6 +845,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5019517172541070981, guid: 6c7d156de2e6a0745804783dbfc79196,
+        type: 3}
+      propertyPath: field of view
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c7d156de2e6a0745804783dbfc79196, type: 3}

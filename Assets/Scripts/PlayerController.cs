@@ -16,6 +16,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public SpriteRenderer playerSprite;
     [SerializeField] public Animator animator;
 
+    [SerializeField] public bool _lastHadSlam = false;
+    [SerializeField] public bool _lastHadPunch = false;
+
     public void OnSuccessfulAttack(AttackType attackType, EnemyController enemy, Vector2 point) {
         Debug.Log("hit " + enemy.gameObject.name + " with attack " + attackType.ToString());
         if (attackType == AttackType.Jump) {
@@ -50,7 +53,6 @@ public class PlayerController : MonoBehaviour
     public void Die() {
         health = 0;
         uiController.SetHealth(health);
-        animator.SetTrigger("Die");
 
         scrapSpawner.transform.parent = null;
         scrapSpawner.Spawn();
@@ -64,6 +66,11 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         uiController.SetHealth(health);
+        _lastHadPunch = abilityController.hasPunch;
+        _lastHadSlam = abilityController.hasSlam;
+
+        animator.SetBool("HasSlam", abilityController.hasSlam);
+        animator.SetBool("HasPunch", abilityController.hasPunch);
     }
 
     // Update is called once per frame
@@ -85,8 +92,21 @@ public class PlayerController : MonoBehaviour
         }
 
         //animation
-        animator.SetFloat("Velocity", Mathf.Abs(movementController.Velocity.x));
-        animator.SetBool("Is_Grounded?", movementController.IsGrounded);
+        animator.SetFloat("VelocityX", Mathf.Abs(movementController.Velocity.x));
+        animator.SetFloat("VelocityY", movementController.Velocity.y);
+        animator.SetBool("IsBlocked", movementController.IsBlocked);
+
+        if (_lastHadPunch != abilityController.hasPunch) {
+            _lastHadPunch = abilityController.hasPunch;
+            animator.SetBool("HasPunch", abilityController.hasPunch);
+            animator.SetTrigger("ChangeAbilities");
+        }
+
+        if (_lastHadSlam != abilityController.hasSlam) {
+            _lastHadSlam = abilityController.hasPunch;
+            animator.SetBool("HasSlam", abilityController.hasSlam);
+            animator.SetTrigger("ChangeAbilities");
+        }
 
         if (movementController.LastDirection > 0) playerSprite.flipX = true;
         else playerSprite.flipX = false;
