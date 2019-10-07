@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool _hasDied = false;
 
     public void OnSuccessfulAttack(AttackType attackType, EnemyController enemy, Vector2 point) {
-        Debug.Log("hit " + enemy.gameObject.name + " with attack " + attackType.ToString());
+        //Debug.Log("hit " + enemy.gameObject.name + " with attack " + attackType.ToString());
         if (attackType == AttackType.Jump || attackType == AttackType.Slam) {
             Vector2 inDirection = (point - (Vector2)transform.position).normalized;
             Vector2 inNormal = Vector2.up;
@@ -141,11 +141,5 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        //if (collision.collider.gameObject.tag == "Enemy") {
-        //    Vulnerable consumer = collision.collider.gameObject.GetComponent<Vulnerable>();
-        //    if (consumer) {
-        //        if (!movementController.IsGrounded) consumer.RecieveAttack(AttackType.Jump, collision.contacts[0].point);
-        //    }
-        //}
     }
 }
