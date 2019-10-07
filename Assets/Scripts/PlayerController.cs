@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public PlayerUIController uiController;
     [SerializeField] public SpriteVFXController vfxController;
     [SerializeField] public CameraController cameraController;
+    [SerializeField] public ScrapSpawner scrapSpawner;
 
     public int health = 4;
     [SerializeField] public SpriteRenderer playerSprite;
@@ -49,7 +50,16 @@ public class PlayerController : MonoBehaviour
 
     public void Die() {
         health = 0;
+        uiController.SetHealth(health);
         animator.SetTrigger("Die");
+
+        scrapSpawner.transform.parent = null;
+        scrapSpawner.Spawn();
+
+        GameStateController.Instance.OnPlayerDie();
+        animator.enabled = false;
+        playerSprite.enabled = false;
+        enabled = false;
     }
 
     // Start is called before the first frame update
@@ -59,6 +69,8 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+        if (GameStateController.Instance.IsPlaying == false) return;
+
         movementController.Move(inputProvider.Horizontal);
 
         if (inputProvider.JumpDown) movementController.Jump();

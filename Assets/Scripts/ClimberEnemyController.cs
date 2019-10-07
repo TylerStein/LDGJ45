@@ -47,6 +47,8 @@ public class ClimberEnemyController : EnemyController
     // Update is called once per frame
     void Update()
     {
+        if (GameStateController.Instance.IsPlaying == false) return;
+
         spriteRenderer.flipY = (movementController.stickSide == StickSide.CEILING);
         spriteRenderer.flipX = (movementController.stickSide == StickSide.RIGHT);
 

@@ -55,6 +55,8 @@ public class BasicEnemyController : EnemyController
     // Update is called once per frame
     void Update()
     {
+        if (GameStateController.Instance.IsPlaying == false) return;
+
         float distanceToPlayer = awarenessProvider.GetHorizontalDistanceToPlayer();
         if (Mathf.Sign(distanceToPlayer) != moveDirection) {
             moveDirection = moveDirection * -1;

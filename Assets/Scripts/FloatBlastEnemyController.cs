@@ -36,6 +36,8 @@ public class FloatBlastEnemyController : EnemyController
     }
 
     private void Update() {
+        if (GameStateController.Instance.IsPlaying == false) return;
+
         if (state == FloatBlastState.MOVING) {
             movementController.Move(moveDirection);
             if (movementController.TouchingWallDirection == moveDirection) {
