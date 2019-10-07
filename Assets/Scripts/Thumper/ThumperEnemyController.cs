@@ -50,6 +50,7 @@ public class ThumperEnemyController : EnemyController
         movementController.ClearVelocity();
         Debug.DrawLine(transform.position, awarenessProvider.Player.transform.position, Color.red);
         awarenessProvider.Player.ReceiveAttack(this);
+        vfxController.SpawnSwipeVFX(transform.position, Vector3.zero, Color.white);
         soundController.PlayAttack();
     }
 
