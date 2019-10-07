@@ -7,7 +7,6 @@ public class FloaterAttackState : BaseState
     protected FloatBlastEnemyController controller;
     protected AwarenessProvider awarenessProvider;
     protected FloaterMovementController movementController;
-    [SerializeField] private float slamHoldTick = 0f;
 
     public FloaterAttackState(FloatBlastEnemyController controller) : base(controller.gameObject)
     {

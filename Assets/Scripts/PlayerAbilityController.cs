@@ -18,6 +18,7 @@ public class PlayerAbilityController : MonoBehaviour
     [SerializeField] public bool hasPunch = true;
     [SerializeField] private float _punchDistance = 1.5f;
     [SerializeField] private float _punchLungeForce = 0.5f;
+    [SerializeField] public float _punchCooldown = 0.5f;
 
     [Header("Slam")]
     [SerializeField] public bool hasSlam = true;

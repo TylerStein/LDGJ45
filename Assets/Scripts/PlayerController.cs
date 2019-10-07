@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool _lastHadSlam = false;
     [SerializeField] private bool _lastHadPunch = false;
     [SerializeField] private bool _hasDied = false;
+    private float punchTimer = 0f;
 
     public void OnSuccessfulAttack(AttackType attackType, EnemyController enemy, Vector2 point) {
         //Debug.Log("hit " + enemy.gameObject.name + " with attack " + attackType.ToString());
@@ -98,6 +99,11 @@ public class PlayerController : MonoBehaviour
         if (GameStateController.Instance.IsPlaying == false) return;
 
         movementController.Move(inputProvider.Horizontal);
+        if(punchTimer > 0)
+        {
+            punchTimer -= Time.deltaTime;
+            if (punchTimer < 0) punchTimer = 0;
+        }
 
         if (inputProvider.JumpDown) {
             if (movementController.Jump()) {
@@ -110,8 +116,9 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (inputProvider.Attack1) {
+        if (inputProvider.Attack1 && punchTimer <= 0) {
             if (abilityController.Punch()) {
+                punchTimer = abilityController._punchCooldown;
                 animator.SetTrigger("Punch");
                 soundController.PlayPunch();
             }
