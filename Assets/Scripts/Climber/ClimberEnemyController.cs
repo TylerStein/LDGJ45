@@ -7,7 +7,6 @@ public class ClimberEnemyController : EnemyController
 {
     [SerializeField] public WallMovementController movementController;
     [SerializeField] public SpriteRenderer spriteRenderer;
-    [SerializeField] public AwarenessProvider awarenessProvider;
     [SerializeField] public Transform weaponTransform;
 
     [SerializeField] public Transform laserSource;

@@ -266,9 +266,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5419120106687088800}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00cb8180d8de32e4b86c29cc2a5ccfd7, type: 3}
+  m_Script: {fileID: 11500000, guid: 266756d6400a3e740b06f816aaf919d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  awarenessProvider: {fileID: 5419120106687088806}
   wallLayerMask:
     serializedVersion: 2
     m_Bits: 256
@@ -276,16 +277,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   movementController: {fileID: 5419120106687090523}
-  awarenessProvider: {fileID: 5419120106687088806}
   animator: {fileID: 1826926744}
   spriteRenderer: {fileID: 5419120105180651296}
   scrapSpawner: {fileID: 3395651127603143376}
   punchMoveForce: 10
   punchDistance: 0.7
-  stopDistance: 0.9
-  moveDirection: 1
-  attackCooldown: 3
-  attackTimer: 0
 --- !u!114 &5419120106687088806
 MonoBehaviour:
   m_ObjectHideFlags: 0

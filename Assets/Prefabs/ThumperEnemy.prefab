@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c32b6a817db8fc4196ad38262eebdd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  owner: {fileID: 338371668184087780}
+  owner: {fileID: 4110166297007651903}
   collider: {fileID: 338371666915516512}
   vulnerableTo: 01000000
 --- !u!61 &338371666915516512
@@ -183,7 +183,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 338371668184087781}
-  - component: {fileID: 338371668184087780}
+  - component: {fileID: 4110166297007651903}
   - component: {fileID: 338371668184087803}
   - component: {fileID: 338371668184087802}
   - component: {fileID: 338371668184087800}
@@ -208,11 +208,12 @@ Transform:
   m_Children:
   - {fileID: 338371667033824706}
   - {fileID: 338371666915516519}
+  - {fileID: 8097730423755981979}
   - {fileID: 2654000770660149163}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &338371668184087780
+--- !u!114 &4110166297007651903
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -221,19 +222,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 338371668184087807}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d8dd191d5fda4b409c24e80b2c1db0c, type: 3}
+  m_Script: {fileID: 11500000, guid: 6c0c91465d2c01741b61ba9ac7ed0272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  didAttack: 0
-  isSlamming: 0
-  slamTick: 0
-  slamHoldTick: 0
-  movementController: {fileID: 338371668184087803}
   awarenessProvider: {fileID: 338371668184087802}
+  movementController: {fileID: 338371668184087803}
+  attackCollider: {fileID: 8353919743691829789}
   animator: {fileID: 7421422455832368366}
   spriteRenderer: {fileID: 338371667033824707}
   scrapSpawner: {fileID: 4230859243406657085}
-  moveDirection: 1
 --- !u!114 &338371668184087803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,7 +246,7 @@ MonoBehaviour:
   movementSettings: {fileID: 11400000, guid: 48efdfebe493a0145bb29f1b47a1e744, type: 2}
   thumperSettings: {fileID: 11400000, guid: e4b506f6e8cc72244867c6409128fb45, type: 2}
   _transform: {fileID: 338371668184087781}
-  _collider: {fileID: 0}
+  _collider: {fileID: 338371668184087801}
   _rigidbody: {fileID: 338371668184087800}
   _currentVelocity: {x: 0, y: 0}
   _shouldJump: 0
@@ -319,6 +316,63 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.8, y: 0.7}
   m_EdgeRadius: 0
+--- !u!1 &8353919743691829789
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8097730423755981979}
+  - component: {fileID: 4112056506669000702}
+  m_Layer: 0
+  m_Name: ThumperAttack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8097730423755981979
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8353919743691829789}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 338371668184087781}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &4112056506669000702
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8353919743691829789}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.03, y: -0.34}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.35, y: 0.1}
+  m_EdgeRadius: 0
 --- !u!1001 &6817424693111692537
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -369,7 +423,7 @@ PrefabInstance:
     - target: {fileID: 8811499383081778002, guid: b0669786fc51e4f4cbd39b9667c1aaff,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8811499383081778002, guid: b0669786fc51e4f4cbd39b9667c1aaff,
         type: 3}

@@ -10,17 +10,25 @@ public class BasicEnemyController : EnemyController
     [SerializeField] public LayerMask attackLayerMask;
 
     [SerializeField] public GroundMovementController movementController;
-    [SerializeField] public AwarenessProvider awarenessProvider;
     [SerializeField] public Animator animator;
     [SerializeField] public SpriteRenderer spriteRenderer;
     [SerializeField] public ScrapSpawner scrapSpawner;
-
     [SerializeField] private float punchMoveForce = 10.0f;
     [SerializeField] private float punchDistance = 0.7f;
-    [SerializeField] private float stopDistance = 0.9f;
-    [SerializeField] private int moveDirection = 1;
-    [SerializeField] private float attackCooldown = 1f;
-    [SerializeField] private float attackTimer = 0;
+    
+    private void Awake()
+    {
+        if (!movementController) movementController = GetComponent<GroundMovementController>();
+        if (!awarenessProvider) awarenessProvider = GetComponent<AwarenessProvider>();
+
+        Dictionary<StateType, BaseState> states = new Dictionary<StateType, BaseState>()
+        {
+            {StateType.Patrol, new GroundPatrolState(this) },
+            {StateType.Chase, new GroundChaseState(this) },
+            {StateType.Attack, new GroundAttackState(this) }
+        };
+        stateMachine.SetStates(states);
+    }
 
     public override void ReceiveAttack(AttackType attackType, Collider2D collider, Vector2 point) {
         // Make the player bounce off the head
@@ -35,10 +43,10 @@ public class BasicEnemyController : EnemyController
 
     public override void GiveAttack()
     {
-        Vector2 collideBoxOrigin = new Vector2(moveDirection * punchDistance + transform.position.x, transform.position.y);
+        Vector2 collideBoxOrigin = new Vector2(movementController.LastDirection * punchDistance + transform.position.x, transform.position.y);
         Collider2D collider = Physics2D.OverlapBox(collideBoxOrigin, new Vector2(0.5f, 0.2f), 0f, attackLayerMask);
 
-        movementController.AddForce(Vector2.right * moveDirection * punchMoveForce);
+        movementController.AddForce(Vector2.right * movementController.LastDirection * punchMoveForce);
         animator.SetTrigger("Attack");
 
         if (collider == null)
@@ -57,28 +65,29 @@ public class BasicEnemyController : EnemyController
     {
         if (GameStateController.Instance.IsPlaying == false) return;
 
-        float distanceToPlayer = awarenessProvider.GetHorizontalDistanceToPlayer();
-        if (Mathf.Sign(distanceToPlayer) != moveDirection) {
-            moveDirection = moveDirection * -1;
-        }
+        // float distanceToPlayer = awarenessProvider.GetHorizontalDistanceToPlayer();
+        // if (Mathf.Sign(distanceToPlayer) != moveDirection) {
+        //     moveDirection = moveDirection * -1;
+        // }
 
-        animator.SetFloat("Velocity", Mathf.Abs(movementController.Velocity.x));
-        spriteRenderer.flipX = moveDirection > 0;
+        // animator.SetFloat("Velocity", Mathf.Abs(movementController.Velocity.x));
+        // spriteRenderer.flipX = moveDirection > 0;
 
-        if (attackTimer > 0)
-        {
-            attackTimer -= Time.deltaTime;
-            if (attackTimer < 0)
-                attackTimer = 0;
-        }
+        // if (attackTimer > 0)
+        // {
+        //     attackTimer -= Time.deltaTime;
+        //     if (attackTimer < 0)
+        //         attackTimer = 0;
+        // }
 
-        if (distanceToPlayer > stopDistance) {
-            movementController.Move(1.0f);
-        } else if (distanceToPlayer < -stopDistance) {
-            movementController.Move(-1.0f);
-        } else if(attackTimer == 0) {
-            attackTimer = attackCooldown;
-            GiveAttack();
-        }
+        // if (distanceToPlayer > stopDistance) {
+        //     movementController.Move(1.0f);
+        // } else if (distanceToPlayer < -stopDistance) {
+        //     movementController.Move(-1.0f);
+        // } else if(attackTimer == 0) {
+        //     attackTimer = attackCooldown;
+        //     GiveAttack();
+        // }
+        stateMachine.Update();
     }
 }
