@@ -301,7 +301,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: PRESS A KEY TO START
+  m_Text: '''R'' / ''START'' TO PLAY'
 --- !u!1 &6424606984474288682
 GameObject:
   m_ObjectHideFlags: 0
@@ -482,7 +482,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'YOU WERE DESTROYED
 
-    PRESS A KEY TO RESTART'
+    ''R'' / START TO TRY AGAIN'
 --- !u!1001 &5607235736036887330
 PrefabInstance:
   m_ObjectHideFlags: 0
