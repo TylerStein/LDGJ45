@@ -83,7 +83,7 @@ public class PlayerAbilityController : MonoBehaviour
     }
 
     public bool Slam() {
-        if (!hasSlam || controller.movementController.IsGrounded) return false;
+        if (!hasSlam || controller.movementController.IsBlocked || controller.movementController.IsGrounded) return false;
         controller.movementController.ClearVelocity();
         Vector2 direction = new Vector2(0, -_slamForce);
         controller.movementController.AddForce(direction);
