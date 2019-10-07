@@ -230,6 +230,7 @@ MonoBehaviour:
   awarenessProvider: {fileID: 338371668184087802}
   spriteRenderer: {fileID: 338371667033824707}
   animator: {fileID: 7421422455832368366}
+  vulnerableTo: 1
   movementController: {fileID: 338371668184087803}
   attackCollider: {fileID: 8353919743691829789}
   scrapSpawner: {fileID: 4230859243406657085}
@@ -494,6 +495,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 338371668184087781}
     m_Modifications:
+    - target: {fileID: 6578238417891660018, guid: b0669786fc51e4f4cbd39b9667c1aaff,
+        type: 3}
+      propertyPath: m_Name
+      value: ScrapBundle
+      objectReference: {fileID: 0}
     - target: {fileID: 8811499383081778002, guid: b0669786fc51e4f4cbd39b9667c1aaff,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -548,11 +554,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6578238417891660018, guid: b0669786fc51e4f4cbd39b9667c1aaff,
-        type: 3}
-      propertyPath: m_Name
-      value: ScrapBundle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0669786fc51e4f4cbd39b9667c1aaff, type: 3}

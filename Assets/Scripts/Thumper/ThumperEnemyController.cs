@@ -15,6 +15,7 @@ public class ThumperEnemyController : EnemyController
     {
         if (!movementController) movementController = GetComponent<ThumperMovementController>();
         if (!awarenessProvider) awarenessProvider = GetComponent<AwarenessProvider>();
+        GetComponentInChildren<ThumperVulnerable>().vulnerableTo = vulnerableTo;
 
         Dictionary<StateType, BaseState> states = new Dictionary<StateType, BaseState>()
         {

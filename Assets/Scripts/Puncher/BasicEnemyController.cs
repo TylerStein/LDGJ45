@@ -19,6 +19,7 @@ public class BasicEnemyController : EnemyController
     {
         if (!movementController) movementController = GetComponent<GroundMovementController>();
         if (!awarenessProvider) awarenessProvider = GetComponent<AwarenessProvider>();
+        GetComponentInChildren<BoxerHeadVulnerable>().vulnerableTo = vulnerableTo;
 
         Dictionary<StateType, BaseState> states = new Dictionary<StateType, BaseState>()
         {

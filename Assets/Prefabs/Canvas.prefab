@@ -114,7 +114,9 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'YOU SURVIVED
 
-    PRESS A KEY TO RESTART'
+    ''R'' / ''SELECT TO RESTART
+
+    ''N'' / ''START'' FOR NEW GAME+'
 --- !u!1 &6424606983028590720
 GameObject:
   m_ObjectHideFlags: 0

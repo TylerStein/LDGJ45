@@ -24,6 +24,7 @@ public class FloatBlastEnemyController : EnemyController
     public void Awake() {
         if (!movementController) movementController = GetComponent<FloaterMovementController>();
         if (!awarenessProvider) awarenessProvider = GetComponent<AwarenessProvider>();
+        GetComponentInChildren<FloatBlasterVulnerable>().vulnerableTo = vulnerableTo;
 
         Dictionary<StateType, BaseState> states = new Dictionary<StateType, BaseState>()
         {

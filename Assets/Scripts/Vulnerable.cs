@@ -14,7 +14,7 @@ public abstract class Vulnerable : MonoBehaviour
 {
     [SerializeField] public EnemyController owner;
     [SerializeField] public new Collider2D collider;
-    [SerializeField] public AttackType[] vulnerableTo = { AttackType.Jump };
+    public AttackType vulnerableTo = AttackType.Jump;
 
     public abstract bool testAttack(Collider2D source, RaycastHit2D hit);
 
@@ -33,14 +33,8 @@ public abstract class Vulnerable : MonoBehaviour
 
     public bool RecieveAttack(AttackType incomingType, Collider2D source, RaycastHit2D hit)
     {
-        bool inList = false;
-        for (int i = 0; i < vulnerableTo.Length; i++) {
-            if (incomingType == vulnerableTo[i]) {
-                inList = true;
-                break;
-            }
-        }
-        if (inList && testAttack(source, hit)) {
+        if (incomingType == vulnerableTo && testAttack(source, hit))
+        {
             owner.ReceiveAttack(incomingType, collider, hit.point);
             return true;
         }

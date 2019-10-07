@@ -118,9 +118,20 @@ public class GameStateController : MonoBehaviour
             } else {
                 _worldRoot.position = Vector2.SmoothDamp(_worldRoot.position, _winStateWorldTarget, ref _worldTargetVelocity, _worldTargetSmoothing * Time.deltaTime);
             }
-        } else if (_gameState == GameState.POSTWIN) {
-            // post-game win menu
-            if (inputProvider.AnyInput) {
+        } else if (_gameState == GameState.POSTWIN)
+        {
+            // post-game win menu RESTART
+            if (Input.GetKeyDown(KeyCode.R) || Input.GetButton("Select"))
+            {
+                PlayerPrefs.SetInt("hasWon", 0);
+                PlayerPrefs.Save();
+                SceneManager.LoadScene(gameSceneIndex);
+            }
+            // post-game win menu NEWGAME+
+            if (Input.GetKeyDown(KeyCode.N) || Input.GetButton("Start"))
+            {
+                PlayerPrefs.SetInt("hasWon", 1);
+                PlayerPrefs.Save();
                 SceneManager.LoadScene(gameSceneIndex);
             }
         } else if (_gameState == GameState.LOSE) {
@@ -136,10 +147,10 @@ public class GameStateController : MonoBehaviour
         List<EnemyController> jumpList = new List<EnemyController>(),
                               punchList = new List<EnemyController>(),
                               slamList = new List<EnemyController>();
-        int jump, punch, slam;
-        jump = Random.Range(0, 3);
-        punch = Random.Range(0, 3);
+        int jump = Random.Range(0, 3),
+        punch = Random.Range(0, 3),
         slam = 0;
+
         if (punch == jump)
         {
             punch = (punch + 1) % 3;
@@ -177,6 +188,9 @@ public class GameStateController : MonoBehaviour
         {
             en.vulnerableTo = (AttackType)slam;
         }
+
+        player.abilityController.hasPunch = true;
+        player.abilityController.hasSlam = true;
     }
 
     public void OnEnemyDie(EnemyController enemy) {
@@ -214,9 +228,6 @@ public class GameStateController : MonoBehaviour
     public void Win() {
         _gameState = GameState.WIN;
         PrepareForAnimation();
-
-        PlayerPrefs.SetInt("hasWon", 1);
-        PlayerPrefs.Save();
 
         inGameUI.SetActive(false);
     }
