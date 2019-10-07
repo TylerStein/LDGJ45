@@ -12,22 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fe8e161c3cf33d4885b38090dedbb68, type: 3}
   m_Name: FloatBlasterMovementSettings
   m_EditorClassIdentifier: 
-  hoverHeight: 5
-  hoverErrorMargin: 0.5
-  hoverHeightSpeed: 5
-  hoverHeightSmoothing: 0.4
+  hoverHeight: 6
+  hoverErrorMargin: 0.1
+  hoverHeightSpeed: 12
+  hoverHeightSmoothing: 0.29
   airMoveSmoothing: 0.05
   airStopSmoothing: 0.07
   airMoveVelocity: 2
   minGroundDistance: 0.01
   minCeilingDistance: 0.01
-  minWallDistance: 0.01
+  minWallDistance: 0.2
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   ceilingLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   wallLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256

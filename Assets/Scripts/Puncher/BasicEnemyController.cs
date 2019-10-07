@@ -10,6 +10,11 @@ public class BasicEnemyController : EnemyController
     [SerializeField] public LayerMask attackLayerMask;
 
     [SerializeField] public GroundMovementController movementController;
+    [SerializeField] public Animator animator;
+    [SerializeField] public SpriteRenderer spriteRenderer;
+    [SerializeField] public ScrapSpawner scrapSpawner;
+    [SerializeField] private float punchMoveForce = 10.0f;
+    [SerializeField] private float punchDistance = 0.7f;
     
     private void Awake()
     {
@@ -28,13 +33,21 @@ public class BasicEnemyController : EnemyController
     public override void ReceiveAttack(AttackType attackType, Collider2D collider, Vector2 point) {
         // Make the player bounce off the head
         awarenessProvider.Player.OnSuccessfulAttack(attackType, this, point);
+        animator.SetTrigger("Damage");
+
+        scrapSpawner.transform.parent = null;
+        scrapSpawner.Spawn();
+
+        Destroy(gameObject, 0.1f);
     }
 
     public override void GiveAttack()
     {
-        Vector2 collideBoxOrigin = new Vector2(movementController.LastDirection * 0.5f + transform.position.x, transform.position.y);
+        Vector2 collideBoxOrigin = new Vector2(movementController.LastDirection * punchDistance + transform.position.x, transform.position.y);
         Collider2D collider = Physics2D.OverlapBox(collideBoxOrigin, new Vector2(0.5f, 0.2f), 0f, attackLayerMask);
 
+        movementController.AddForce(Vector2.right * movementController.LastDirection * punchMoveForce);
+        animator.SetTrigger("Attack");
 
         if (collider == null)
             return;

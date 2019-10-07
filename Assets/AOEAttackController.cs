@@ -17,6 +17,9 @@ public class AOEAttackController : MonoBehaviour
     [SerializeField] public SpriteRenderer spriteRenderer;
     [SerializeField] public CircleCollider2D circleCollider;
 
+    [SerializeField] public float flipXFrequency = 0.01f;
+    [SerializeField] public float flipXTimer = 0f;
+
     [SerializeField] public float minSize = 0.1f;
     [SerializeField] public float maxSize = 1.0f;
 
@@ -33,12 +36,22 @@ public class AOEAttackController : MonoBehaviour
     [SerializeField] private float _stayTicker = 0f;
 
     private void Start() {
+
         Deactivate();
+        circleCollider.isTrigger = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (flipXTimer < flipXFrequency) {
+            flipXTimer += Time.deltaTime;
+            if (flipXTimer >= flipXFrequency) {
+                spriteRenderer.flipX = !spriteRenderer.flipX;
+                flipXTimer = 0f;
+            }
+        }
+
         if (_state == AOEState.GROW) {
             _currentScale = Mathf.SmoothDamp(_currentScale, maxSize, ref _scaleDampenVelocity, growthDampening * Time.deltaTime);
             setScales();
