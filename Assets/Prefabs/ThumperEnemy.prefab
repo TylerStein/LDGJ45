@@ -226,10 +226,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   awarenessProvider: {fileID: 338371668184087802}
+  spriteRenderer: {fileID: 338371667033824707}
+  animator: {fileID: 7421422455832368366}
   movementController: {fileID: 338371668184087803}
   attackCollider: {fileID: 8353919743691829789}
-  animator: {fileID: 7421422455832368366}
-  spriteRenderer: {fileID: 338371667033824707}
   scrapSpawner: {fileID: 4230859243406657085}
 --- !u!114 &338371668184087803
 MonoBehaviour:
@@ -332,7 +332,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8097730423755981979
 Transform:
   m_ObjectHideFlags: 0
@@ -380,11 +380,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 338371668184087781}
     m_Modifications:
-    - target: {fileID: 6578238417891660018, guid: b0669786fc51e4f4cbd39b9667c1aaff,
-        type: 3}
-      propertyPath: m_Name
-      value: ScrapBundle
-      objectReference: {fileID: 0}
     - target: {fileID: 8811499383081778002, guid: b0669786fc51e4f4cbd39b9667c1aaff,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -439,6 +434,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6578238417891660018, guid: b0669786fc51e4f4cbd39b9667c1aaff,
+        type: 3}
+      propertyPath: m_Name
+      value: ScrapBundle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0669786fc51e4f4cbd39b9667c1aaff, type: 3}

@@ -6,6 +6,7 @@ public class GroundAttackState : BaseState
 {
     protected EnemyController controller;
     protected AwarenessProvider awarenessProvider;
+    protected GroundMovementController movementController;
     [SerializeField] private float attackCooldown = 1f;
     [SerializeField] private float attackTimer = 0;
     [SerializeField] private float attackRange = 1.6f;
@@ -15,6 +16,7 @@ public class GroundAttackState : BaseState
         type = StateType.Attack;
         this.controller = controller;
         awarenessProvider = controller.awarenessProvider;
+        movementController = gameObject.GetComponent<GroundMovementController>();
     }
     public override void Activate()
     {
@@ -25,7 +27,9 @@ public class GroundAttackState : BaseState
     {
         if(attackTimer <= 0f)
         {
-            if(Mathf.Abs(awarenessProvider.GetHorizontalDistanceToPlayer()) > attackRange)
+            float distanceToPlayer = awarenessProvider.GetHorizontalDistanceToPlayer();
+            if (Mathf.Abs(awarenessProvider.GetHorizontalDistanceToPlayer()) > attackRange || 
+                Mathf.Sign(distanceToPlayer) != movementController.LastDirection)
             {
                 return StateType.Chase;
             }

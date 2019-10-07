@@ -5,6 +5,7 @@ using UnityEngine;
 public class ThumperPatrolState : BaseState
 {
     protected AwarenessProvider awarenessProvider;
+    protected EnemyController controller;
     protected ThumperMovementController movementController;
     [SerializeField] private int moveDirection = 1;
     [SerializeField] private Vector3 origPosition;
@@ -14,6 +15,7 @@ public class ThumperPatrolState : BaseState
     public ThumperPatrolState(EnemyController controller) : base(controller.gameObject)
     {
         type = StateType.Patrol;
+        this.controller = controller;
         awarenessProvider = controller.awarenessProvider;
         movementController = gameObject.GetComponent<ThumperMovementController>();
         origPosition = movementController.transform.position;
@@ -50,6 +52,10 @@ public class ThumperPatrolState : BaseState
             moveDirection *= -1;
         }
         movementController.Move(moveDirection);
+
+        controller.animator.SetFloat("Velocity", Mathf.Abs(movementController.Velocity.x));
+        controller.spriteRenderer.flipX = moveDirection > 0;
+
         return type;
     }
 }

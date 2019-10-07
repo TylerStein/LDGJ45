@@ -12,8 +12,6 @@ public enum FloatBlastState
 public class FloatBlastEnemyController : EnemyController
 {
     [SerializeField] public FloaterMovementControllerr movementController;
-    [SerializeField] public Animator animator;
-    [SerializeField] public SpriteRenderer spriteRenderer;
     [SerializeField] public AOEAttackController attackController;
 
     [SerializeField] public FloatBlastState state;

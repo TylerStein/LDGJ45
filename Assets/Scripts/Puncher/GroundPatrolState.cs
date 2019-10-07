@@ -5,6 +5,7 @@ using UnityEngine;
 public class GroundPatrolState : BaseState
 {
     protected AwarenessProvider awarenessProvider;
+    protected EnemyController controller;
     protected GroundMovementController movementController;
     [SerializeField] private int moveDirection = 1;
     [SerializeField] private Vector3 origPosition;
@@ -14,6 +15,7 @@ public class GroundPatrolState : BaseState
     public GroundPatrolState(EnemyController controller) : base(controller.gameObject)
     {
         type = StateType.Patrol;
+        this.controller = controller;
         awarenessProvider = controller.awarenessProvider;
         movementController = gameObject.GetComponent<GroundMovementController>();
         origPosition = movementController.transform.position;
@@ -39,6 +41,10 @@ public class GroundPatrolState : BaseState
             moveDirection *= -1;
         }
         movementController.Move(moveDirection);
+
+        controller.animator.SetFloat("Velocity", Mathf.Abs(movementController.Velocity.x));
+        controller.spriteRenderer.flipX = moveDirection > 0;
+
         return type;
     }
 }

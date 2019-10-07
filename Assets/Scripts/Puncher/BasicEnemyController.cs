@@ -10,8 +10,6 @@ public class BasicEnemyController : EnemyController
     [SerializeField] public LayerMask attackLayerMask;
 
     [SerializeField] public GroundMovementController movementController;
-    [SerializeField] public Animator animator;
-    [SerializeField] public SpriteRenderer spriteRenderer;
     [SerializeField] public ScrapSpawner scrapSpawner;
     [SerializeField] private float punchMoveForce = 10.0f;
     [SerializeField] private float punchDistance = 0.7f;
@@ -65,29 +63,6 @@ public class BasicEnemyController : EnemyController
     {
         if (GameStateController.Instance.IsPlaying == false) return;
 
-        // float distanceToPlayer = awarenessProvider.GetHorizontalDistanceToPlayer();
-        // if (Mathf.Sign(distanceToPlayer) != moveDirection) {
-        //     moveDirection = moveDirection * -1;
-        // }
-
-        // animator.SetFloat("Velocity", Mathf.Abs(movementController.Velocity.x));
-        // spriteRenderer.flipX = moveDirection > 0;
-
-        // if (attackTimer > 0)
-        // {
-        //     attackTimer -= Time.deltaTime;
-        //     if (attackTimer < 0)
-        //         attackTimer = 0;
-        // }
-
-        // if (distanceToPlayer > stopDistance) {
-        //     movementController.Move(1.0f);
-        // } else if (distanceToPlayer < -stopDistance) {
-        //     movementController.Move(-1.0f);
-        // } else if(attackTimer == 0) {
-        //     attackTimer = attackCooldown;
-        //     GiveAttack();
-        // }
         stateMachine.Update();
     }
 }

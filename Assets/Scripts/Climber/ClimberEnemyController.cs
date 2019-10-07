@@ -6,7 +6,6 @@ using UnityEngine;
 public class ClimberEnemyController : EnemyController
 {
     [SerializeField] public WallMovementController movementController;
-    [SerializeField] public SpriteRenderer spriteRenderer;
     [SerializeField] public Transform weaponTransform;
 
     [SerializeField] public Transform laserSource;

@@ -8,8 +8,6 @@ public class ThumperEnemyController : EnemyController
 {
     [SerializeField] public ThumperMovementController movementController;
     [SerializeField] public GameObject attackCollider;
-    [SerializeField] public Animator animator;
-    [SerializeField] public SpriteRenderer spriteRenderer;
     [SerializeField] public ScrapSpawner scrapSpawner;
 
 

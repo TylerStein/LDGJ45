@@ -31,15 +31,18 @@ public class GroundChaseState : BaseState
         {
             return StateType.Patrol;
         }
-        else if (Mathf.Abs(distanceToPlayer) < attackRange)
-        {
-            return StateType.Attack;
-        }
         else if (Mathf.Sign(distanceToPlayer) != moveDirection)
         {
             moveDirection *= -1;
         }
+        else if (Mathf.Abs(distanceToPlayer) < attackRange)
+        {
+            return StateType.Attack;
+        }
         movementController.Move(moveDirection);
+
+        controller.animator.SetFloat("Velocity", Mathf.Abs(movementController.Velocity.x));
+        controller.spriteRenderer.flipX = moveDirection > 0;
 
         return type;
     }
