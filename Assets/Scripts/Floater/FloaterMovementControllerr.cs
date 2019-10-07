@@ -121,18 +121,18 @@ public class FloaterMovementControllerr : MonoBehaviour
     private void updateTouchingWalls() {
         if (_lastDirection < 0) {
             // looking left, test left first
-            if (isTouching(Vector2.left, movementSettings.minWallDistance, movementSettings.wallLayer)) {
+            if (isTouching(Vector2.left, movementSettings.minWallDistance, movementSettings.wallLayer, "Ground")) {
                 _touchingWallDirection = -1;
-            } else if (isTouching(Vector2.right, movementSettings.minWallDistance, movementSettings.wallLayer)) {
+            } else if (isTouching(Vector2.right, movementSettings.minWallDistance, movementSettings.wallLayer, "Ground")) {
                 _touchingWallDirection = 1;
             } else {
                 _touchingWallDirection = 0;
             }
         } else {
             // looking right, test right first
-            if (isTouching(Vector2.right, movementSettings.minWallDistance, movementSettings.wallLayer)) {
+            if (isTouching(Vector2.right, movementSettings.minWallDistance, movementSettings.wallLayer, "Ground")) {
                 _touchingWallDirection = 1;
-            } else if (isTouching(Vector2.left, movementSettings.minWallDistance, movementSettings.wallLayer)) {
+            } else if (isTouching(Vector2.left, movementSettings.minWallDistance, movementSettings.wallLayer, "Ground")) {
                 _touchingWallDirection = -1;
             } else {
                 _touchingWallDirection = 0;
@@ -141,7 +141,9 @@ public class FloaterMovementControllerr : MonoBehaviour
     }
 
     private void updateTouchingCeiling() {
-        _isTouchingCeiling = isTouching(Vector2.up, movementSettings.minCeilingDistance, movementSettings.ceilingLayer);
+        string touchTag = "";
+        bool touch = isTouching(Vector2.up, movementSettings.minCeilingDistance, movementSettings.ceilingLayer, "Ground");
+        _isTouchingCeiling = (touchTag == "Ground" && touch);
     }
 
     private void updateBlocked() {
@@ -164,14 +166,15 @@ public class FloaterMovementControllerr : MonoBehaviour
         _isBlocked = false;
     }
 
-    private bool isTouching(Vector2 direction, float distance, int mask = 1 << 0) {
+    private bool isTouching(Vector2 direction, float distance, int mask, string tagFilter = "") {
         ContactFilter2D filter = new ContactFilter2D();
         filter.layerMask = mask;
 
-
+        bool useTagFilter = (tagFilter != "");
         int contactCount = _collider.Cast(direction, filter, _contacts, distance);
         for (int i = 0; i < contactCount; i++) {
             if (_contacts[i].collider != null) {
+                if (useTagFilter) return tagFilter == _contacts[i].collider.tag;
                 return true;
             }
         }

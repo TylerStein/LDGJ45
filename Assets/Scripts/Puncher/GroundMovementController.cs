@@ -170,7 +170,7 @@ public class GroundMovementController : MonoBehaviour
         ContactFilter2D filter = new ContactFilter2D();
         filter.ClearLayerMask();
 
-        int contactCount = _collider.Cast(Vector2.down, filter, _contacts, 0.1f);
+        int contactCount = _collider.Cast(Vector2.down, filter, _contacts, movementSettings.minGroundDistance);
         for (int i = 0; i < contactCount; i++) {
             if (_contacts[i].collider != null && _contacts[i].transform != transform) {
                 _isBlocked = true;
@@ -180,6 +180,7 @@ public class GroundMovementController : MonoBehaviour
                 return;
             }
         }
+        _isGrounded = false;
         _isBlocked = false;
     }
 

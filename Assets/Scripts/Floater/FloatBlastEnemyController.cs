@@ -32,6 +32,7 @@ public class FloatBlastEnemyController : EnemyController
 
     public override void ReceiveAttack(AttackType attackType, Collider2D collider, Vector2 point) {
         awarenessProvider.Player.OnSuccessfulAttack(attackType, this, point);
+        GameStateController.Instance.OnEnemyDie(this);
     }
 
     private void Update() {

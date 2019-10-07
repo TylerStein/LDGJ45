@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fe8e161c3cf33d4885b38090dedbb68, type: 3}
   m_Name: FloatBlasterMovementSettings
   m_EditorClassIdentifier: 
-  hoverHeight: 6
+  hoverHeight: 1.5
   hoverErrorMargin: 0.1
   hoverHeightSpeed: 12
   hoverHeightSmoothing: 0.29
