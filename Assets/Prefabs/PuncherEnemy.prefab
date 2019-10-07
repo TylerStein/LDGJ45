@@ -189,7 +189,7 @@ GameObject:
   - component: {fileID: 5419120106687088806}
   - component: {fileID: 1087246759}
   m_Layer: 9
-  m_Name: Puncher
+  m_Name: PuncherEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

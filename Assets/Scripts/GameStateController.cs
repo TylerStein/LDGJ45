@@ -6,10 +6,11 @@ using UnityEngine.SceneManagement;
 public enum GameState
 {
     PREGAME = 0,
-    INGAME = 1,
-    LOSE = 2,
-    WIN = 3,
-    POSTWIN = 4
+    ENTERGAME = 1,
+    INGAME = 2,
+    LOSE = 3,
+    WIN = 4,
+    POSTWIN = 5
 }
 
 public class GameStateController : MonoBehaviour
@@ -21,6 +22,8 @@ public class GameStateController : MonoBehaviour
 
     [SerializeField] public List<EnemyController> _enemies = new List<EnemyController>();
     [SerializeField] public PlayerInputProvider inputProvider;
+    [SerializeField] public CameraController cameraController;
+    [SerializeField] public PlayerController player;
 
     [SerializeField] public GameObject inGameUI;
     [SerializeField] public GameObject preGameUI;
@@ -28,10 +31,17 @@ public class GameStateController : MonoBehaviour
     [SerializeField] public GameObject postLoseUI;
 
     [SerializeField] private Transform _elevatorTransform;
+    [SerializeField] private Transform _worldRoot;
+
     [SerializeField] private Collider2D _ceilingCollider;
-    [SerializeField] private Vector2 _winStateElevatorTarget = new Vector2(0, 15f);
-    [SerializeField] private float _winStateElevatorSmoothing = 50f;
-    [SerializeField] private Vector2 _winStateElevatorCurrentVelocity = Vector2.zero;
+
+    [SerializeField] private Vector2 _winStateWorldTarget = new Vector2(0f, -20f);
+    [SerializeField] private Vector2 _inGameWorldTarget = new Vector2(0f, 0f);
+    [SerializeField] private Vector2 _preGameWorldPosition = new Vector2(0, 20f);
+
+    [SerializeField] private Vector2 _worldTargetVelocity = Vector2.zero;
+    [SerializeField] private float _worldTargetSmoothing = 50f;
+    [SerializeField] private float _worldTargetSnapDistance = 0.15f;
 
     [SerializeField] private int gameSceneIndex = 0;
     [SerializeField] private GameState _gameState = GameState.PREGAME;
@@ -40,43 +50,76 @@ public class GameStateController : MonoBehaviour
     public void Awake() {
         GameStateController._instance = this;
         if (_enemies.Count == 0) _enemies = new List<EnemyController>(FindObjectsOfType<EnemyController>());
+        if (!player) player = FindObjectOfType<PlayerController>();
+
+        // init ui state
         preGameUI.SetActive(true);
         inGameUI.SetActive(false);
         postWinUI.SetActive(false);
         postLoseUI.SetActive(false);
+
+        PrepareForAnimation();
+        _worldRoot.position = _preGameWorldPosition;
+
         _gameState = GameState.PREGAME;
     }
 
     public void Update() {
         if (_gameState == GameState.PREGAME) {
-            if (_pendingStartGame) {
-                _gameState = GameState.INGAME;
-            } else if (inputProvider.AnyInput) {
+            // pre-game menu
+            if (inputProvider.AnyInput) {
                 preGameUI.SetActive(false);
                 inGameUI.SetActive(true);
-                _pendingStartGame = true;
+                PrepareForAnimation();
+                _worldRoot.position = _preGameWorldPosition;
+                _gameState = GameState.ENTERGAME;
             }
-        } if (_gameState == GameState.INGAME) {
+        } else if (_gameState == GameState.ENTERGAME) {
+            // pre-game animation
+            if (_pendingStartGame) {
+                _gameState = GameState.INGAME;
+            } else {
+                if (Mathf.Abs(_worldRoot.position.y  - _inGameWorldTarget.y) <= _worldTargetSnapDistance) {
+                    _worldRoot.position = Vector2.SmoothDamp(_worldRoot.position, _inGameWorldTarget, ref _worldTargetVelocity, _worldTargetSmoothing * 0.15f * Time.deltaTime);
+                    if (Mathf.Abs(_worldRoot.position.y - _inGameWorldTarget.y) <= _worldTargetSnapDistance * 0.1f) {
+                        _worldRoot.position = _inGameWorldTarget;
+                        TeardownAnimation();
+                        _pendingStartGame = true;
+                    }
+                } else {
+                    _worldRoot.position = Vector2.SmoothDamp(_worldRoot.position, _inGameWorldTarget, ref _worldTargetVelocity, _worldTargetSmoothing * Time.deltaTime);
+                }
+            }
+        } else if (_gameState == GameState.INGAME) {
+            // in-game
             if (Application.isEditor) {
                 // Editor only inputs
                 if (Input.GetKeyDown(KeyCode.Equals)) {
                     Win();
                 } else if (Input.GetKeyDown(KeyCode.Minus)) {
-                    FindObjectOfType<PlayerController>().Die();
+                    player.Die();
                     Lose();
                 }
             }
         } else if (_gameState == GameState.WIN) {
-            _elevatorTransform.position = Vector2.SmoothDamp(_elevatorTransform.position, _winStateElevatorTarget, ref _winStateElevatorCurrentVelocity, _winStateElevatorSmoothing * Time.deltaTime);
-            if (_elevatorTransform.position.y >= (_winStateElevatorTarget.y - 2.0f)) {
-                postWinUI.SetActive(true);
-                _gameState = GameState.POSTWIN;
+            // post-game win animation
+            if (Mathf.Abs(_worldRoot.position.y - _winStateWorldTarget.y) <= _worldTargetSnapDistance) {
+                _worldRoot.position = Vector2.SmoothDamp(_worldRoot.position, _winStateWorldTarget, ref _worldTargetVelocity, _worldTargetSmoothing * 0.15f * Time.deltaTime);
+                if (Mathf.Abs(_worldRoot.position.y - _winStateWorldTarget.y) <= _worldTargetSnapDistance * 0.1f) {
+                    postWinUI.SetActive(true);
+                    TeardownAnimation();
+                    _gameState = GameState.POSTWIN;
+                }
+            } else {
+                _worldRoot.position = Vector2.SmoothDamp(_worldRoot.position, _winStateWorldTarget, ref _worldTargetVelocity, _worldTargetSmoothing * Time.deltaTime);
             }
         } else if (_gameState == GameState.POSTWIN) {
+            // post-game win menu
             if (inputProvider.AnyInput) {
                 SceneManager.LoadScene(gameSceneIndex);
             }
         } else if (_gameState == GameState.LOSE) {
+            // post-game lose menu
             if (inputProvider.AnyInput) {
                 SceneManager.LoadScene(gameSceneIndex);
             }
@@ -98,12 +141,26 @@ public class GameStateController : MonoBehaviour
         Lose();
     }
 
+    public void PrepareForAnimation() {
+        // prep for intro sequence
+        cameraController.enabled = false;
+        _elevatorTransform.parent = null;
+        cameraController.transform.parent = _worldRoot;
+        _ceilingCollider.enabled = false;
+        _worldTargetVelocity = Vector2.zero;
+    }
+
+    public void TeardownAnimation() {
+        cameraController.enabled = true;
+        _elevatorTransform.parent = _worldRoot;
+        cameraController.transform.parent = null;
+        _ceilingCollider.enabled = true;
+        _worldTargetVelocity = Vector2.zero;
+    }
+
     public void Win() {
         _gameState = GameState.WIN;
-        _ceilingCollider.enabled = false;
-
-        //for (int i = 0; i < _enemies.Count; i++) Destroy(_enemies[i].gameObject, 0.01f);
-        //_enemies.Clear();
+        PrepareForAnimation();
 
         inGameUI.SetActive(false);
     }

@@ -37,7 +37,6 @@ public class PlayerController : MonoBehaviour
     public void ReceiveAttack(EnemyController enemy)
     {
         cameraController.Shake(0.02f, 0.01f, 0.25f);
-        Debug.Log("Got hit by " + enemy.gameObject.name);
         vfxController.SpawnSwipeVFX(transform.position, Vector3.zero, Color.white);
         health--;
         uiController.SetHealth(health);

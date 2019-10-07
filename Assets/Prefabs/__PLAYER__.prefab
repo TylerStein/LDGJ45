@@ -73,7 +73,7 @@ SpriteRenderer:
   m_Sprite: {fileID: -4175818978222488309, guid: 0eb8e7ac02daa144f920c232e57ba9c8,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -318,11 +318,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2587929584712949168}
     m_Modifications:
-    - target: {fileID: 6578238417891660018, guid: b0669786fc51e4f4cbd39b9667c1aaff,
-        type: 3}
-      propertyPath: m_Name
-      value: ScrapBundle
-      objectReference: {fileID: 0}
     - target: {fileID: 8811499383081778002, guid: b0669786fc51e4f4cbd39b9667c1aaff,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -377,6 +372,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6578238417891660018, guid: b0669786fc51e4f4cbd39b9667c1aaff,
+        type: 3}
+      propertyPath: m_Name
+      value: ScrapBundle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0669786fc51e4f4cbd39b9667c1aaff, type: 3}
