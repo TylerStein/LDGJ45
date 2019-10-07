@@ -15,6 +15,7 @@ public class ThumperEnemyController : EnemyController
     [SerializeField] public AwarenessProvider awarenessProvider;
     [SerializeField] public Animator animator;
     [SerializeField] public SpriteRenderer spriteRenderer;
+    [SerializeField] public ScrapSpawner scrapSpawner;
 
     [SerializeField] private int moveDirection = 1;
 
@@ -27,10 +28,13 @@ public class ThumperEnemyController : EnemyController
     public override void ReceiveAttack(AttackType attackType, Collider2D collider, Vector2 point) {
         isSlamming = false;
         movementController.ClearVelocity();
-        Vector2 inDirection = ((Vector2)transform.position - point).normalized;
-        movementController.AddForce(inDirection * 5.0f);
         awarenessProvider.Player.OnSuccessfulAttack(attackType, this, point);
-        animator.SetTrigger("Damage");
+       // animator.SetTrigger("Damage");
+
+        scrapSpawner.transform.parent = null;
+        scrapSpawner.Spawn();
+
+        Destroy(gameObject, 0.1f);
     }
 
     public override void GiveAttack() {

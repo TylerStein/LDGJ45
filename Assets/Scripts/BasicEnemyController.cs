@@ -13,6 +13,7 @@ public class BasicEnemyController : EnemyController
     [SerializeField] public AwarenessProvider awarenessProvider;
     [SerializeField] public Animator animator;
     [SerializeField] public SpriteRenderer spriteRenderer;
+    [SerializeField] public ScrapSpawner scrapSpawner;
 
     [SerializeField] private float punchMoveForce = 10.0f;
     [SerializeField] private float punchDistance = 0.7f;
@@ -25,6 +26,11 @@ public class BasicEnemyController : EnemyController
         // Make the player bounce off the head
         awarenessProvider.Player.OnSuccessfulAttack(attackType, this, point);
         animator.SetTrigger("Damage");
+
+        scrapSpawner.transform.parent = null;
+        scrapSpawner.Spawn();
+
+        Destroy(gameObject, 0.1f);
     }
 
     public override void GiveAttack()
