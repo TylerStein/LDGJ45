@@ -52,6 +52,11 @@ public class GameStateController : MonoBehaviour
         if (_enemies.Count == 0) _enemies = new List<EnemyController>(FindObjectsOfType<EnemyController>());
         if (!player) player = FindObjectOfType<PlayerController>();
 
+        if(PlayerPrefs.GetInt("hasWon", 0) != 0)
+        {
+            NewGamePlusSetup();
+        }
+
         // init ui state
         preGameUI.SetActive(true);
         inGameUI.SetActive(false);
@@ -126,6 +131,54 @@ public class GameStateController : MonoBehaviour
         }
     }
 
+    private void NewGamePlusSetup()
+    {
+        List<EnemyController> jumpList = new List<EnemyController>(),
+                              punchList = new List<EnemyController>(),
+                              slamList = new List<EnemyController>();
+        int jump, punch, slam;
+        jump = Random.Range(0, 3);
+        punch = Random.Range(0, 3);
+        slam = 0;
+        if (punch == jump)
+        {
+            punch = (punch + 1) % 3;
+        }
+        while (slam == jump || slam == punch)
+        {
+            slam = (slam + 1) % 3;
+        }
+
+        foreach (EnemyController en in _enemies)
+        {
+            switch (en.vulnerableTo)
+            {
+                case AttackType.Jump:
+                    jumpList.Add(en);
+                    break;
+                case AttackType.Punch:
+                    punchList.Add(en);
+                    break;
+                case AttackType.Slam:
+                    slamList.Add(en);
+                    break;
+            }
+        }
+
+        foreach (EnemyController en in jumpList)
+        {
+            en.vulnerableTo = (AttackType)jump;
+        }
+        foreach (EnemyController en in punchList)
+        {
+            en.vulnerableTo = (AttackType)punch;
+        }
+        foreach (EnemyController en in slamList)
+        {
+            en.vulnerableTo = (AttackType)slam;
+        }
+    }
+
     public void OnEnemyDie(EnemyController enemy) {
         int index = _enemies.FindIndex((EnemyController controller) => enemy == controller);
         if (index == -1) Debug.LogWarning("Enemy " + enemy.gameObject.name + " is not tracked in the GameStateController!");
@@ -161,6 +214,9 @@ public class GameStateController : MonoBehaviour
     public void Win() {
         _gameState = GameState.WIN;
         PrepareForAnimation();
+
+        PlayerPrefs.SetInt("hasWon", 1);
+        PlayerPrefs.Save();
 
         inGameUI.SetActive(false);
     }
