@@ -13,9 +13,23 @@ public class Player_Sound_controller : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    public void PlayJump() {
+        audioSource.PlayOneShot(jump);
+    }
 
+    public void PlayPunch() {
+        audioSource.PlayOneShot(punch);
+    }
+
+    public void PlayShoot() {
+        audioSource.PlayOneShot(shoot);
+    }
+
+    public void PlayTakeDamage() {
+        audioSource.PlayOneShot(takeDamage);
+    }
+
+    public void PlayDie() {
+        audioSource.PlayOneShot(die);
     }
 }

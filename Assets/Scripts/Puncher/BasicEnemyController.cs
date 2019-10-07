@@ -11,6 +11,7 @@ public class BasicEnemyController : EnemyController
 
     [SerializeField] public GroundMovementController movementController;
     [SerializeField] public ScrapSpawner scrapSpawner;
+    [SerializeField] public Enemy_Sound_Controller soundController;
     [SerializeField] private float punchMoveForce = 10.0f;
     [SerializeField] private float punchDistance = 0.7f;
     
@@ -36,8 +37,15 @@ public class BasicEnemyController : EnemyController
         scrapSpawner.transform.parent = null;
         scrapSpawner.Spawn();
 
+        soundController.PlayDie();
+
         GameStateController.Instance.OnEnemyDie(this);
-        Destroy(gameObject, 0.1f);
+        movementController.rigidbody.simulated = false;
+        movementController.collider.enabled = false;
+        movementController.enabled = false;
+        spriteRenderer.enabled = false;
+        Destroy(gameObject, 1.0f);
+        enabled = false;
     }
 
     public override void GiveAttack()
@@ -47,6 +55,8 @@ public class BasicEnemyController : EnemyController
 
         movementController.AddForce(Vector2.right * movementController.LastDirection * punchMoveForce);
         animator.SetTrigger("Attack");
+
+        soundController.PlayAttack();
 
         if (collider == null)
             return;

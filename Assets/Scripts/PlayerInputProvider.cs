@@ -12,7 +12,7 @@ public class PlayerInputProvider : MonoBehaviour
     public bool Attack2 { get; private set; } = false;
     public bool Attack3 { get; private set; } = false;
 
-    public bool AnyInput { get { return (Horizontal != 0) || (Vertical != 0) || JumpDown || Attack1 || Attack2 || Attack3; } }
+    public bool AnyInput { get { return JumpDown || Attack1 || Attack2 || Attack3; } }
 
 
     [SerializeField] private string horizontalAxis = "Horizontal";

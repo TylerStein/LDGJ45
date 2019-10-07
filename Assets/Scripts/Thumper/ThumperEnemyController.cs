@@ -9,7 +9,7 @@ public class ThumperEnemyController : EnemyController
     [SerializeField] public ThumperMovementController movementController;
     [SerializeField] public GameObject attackCollider;
     [SerializeField] public ScrapSpawner scrapSpawner;
-
+    [SerializeField] public Enemy_Sound_Controller soundController;
 
     public void Awake()
     {
@@ -33,8 +33,15 @@ public class ThumperEnemyController : EnemyController
         scrapSpawner.transform.parent = null;
         scrapSpawner.Spawn();
 
+        soundController.PlayDie();
+
         GameStateController.Instance.OnEnemyDie(this);
-        Destroy(gameObject, 0.1f);
+        movementController.rigidbody.simulated = false;
+        movementController.collider.enabled = false;
+        movementController.enabled = false;
+        spriteRenderer.enabled = false;
+        Destroy(gameObject, 1.0f);
+        enabled = false;
     }
 
     public override void GiveAttack()
@@ -42,6 +49,7 @@ public class ThumperEnemyController : EnemyController
         movementController.ClearVelocity();
         Debug.DrawLine(transform.position, awarenessProvider.Player.transform.position, Color.red);
         awarenessProvider.Player.ReceiveAttack(this);
+        soundController.PlayAttack();
     }
 
     // Update is called once per frame

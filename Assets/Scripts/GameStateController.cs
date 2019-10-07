@@ -107,7 +107,7 @@ public class GameStateController : MonoBehaviour
                 _worldRoot.position = Vector2.SmoothDamp(_worldRoot.position, _winStateWorldTarget, ref _worldTargetVelocity, _worldTargetSmoothing * 0.15f * Time.deltaTime);
                 if (Mathf.Abs(_worldRoot.position.y - _winStateWorldTarget.y) <= _worldTargetSnapDistance * 0.1f) {
                     postWinUI.SetActive(true);
-                    TeardownAnimation();
+                   // TeardownAnimation();
                     _gameState = GameState.POSTWIN;
                 }
             } else {

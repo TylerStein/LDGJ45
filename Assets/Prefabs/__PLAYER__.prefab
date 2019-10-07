@@ -92,7 +92,7 @@ Animator:
   m_GameObject: {fileID: 2587929583951581991}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 80dc7aaecf07aff489b3aed3d2f04de6, type: 2}
+  m_Controller: {fileID: 9100000, guid: 83ad350d753a061428797cd6b621c533, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -180,6 +180,7 @@ MonoBehaviour:
   vfxController: {fileID: 2587929584712949173}
   cameraController: {fileID: 0}
   scrapSpawner: {fileID: 5170554091805083647}
+  soundController: {fileID: 3017249702043243102}
   health: 4
   playerSprite: {fileID: 2587929583951581994}
   animator: {fileID: 2587929583951581992}
@@ -435,6 +436,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2587929584712949168}
     m_Modifications:
+    - target: {fileID: 6578238417891660018, guid: b0669786fc51e4f4cbd39b9667c1aaff,
+        type: 3}
+      propertyPath: m_Name
+      value: ScrapBundle
+      objectReference: {fileID: 0}
     - target: {fileID: 8811499383081778002, guid: b0669786fc51e4f4cbd39b9667c1aaff,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -489,11 +495,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6578238417891660018, guid: b0669786fc51e4f4cbd39b9667c1aaff,
-        type: 3}
-      propertyPath: m_Name
-      value: ScrapBundle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0669786fc51e4f4cbd39b9667c1aaff, type: 3}

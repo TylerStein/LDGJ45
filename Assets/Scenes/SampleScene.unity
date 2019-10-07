@@ -460,7 +460,7 @@ MonoBehaviour:
   _enemies: []
   inputProvider: {fileID: 1608563396}
   cameraController: {fileID: 963194230}
-  player: {fileID: 0}
+  player: {fileID: 1448601362}
   inGameUI: {fileID: 1198836291}
   preGameUI: {fileID: 1405386357}
   postWinUI: {fileID: 1776156391}
@@ -472,7 +472,7 @@ MonoBehaviour:
   _inGameWorldTarget: {x: 0, y: 0}
   _preGameWorldPosition: {x: 0, y: 20}
   _worldTargetVelocity: {x: 0, y: 0}
-  _worldTargetSmoothing: 25
+  _worldTargetSmoothing: 35
   _worldTargetSnapDistance: 0.025
   gameSceneIndex: 0
   _gameState: 0
@@ -742,18 +742,33 @@ PrefabInstance:
     - target: {fileID: 2587929584712949171, guid: e6c9993445d24744e9bc3ca42f8c45a5,
         type: 3}
       propertyPath: hasSlam
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2587929584712949171, guid: e6c9993445d24744e9bc3ca42f8c45a5,
         type: 3}
       propertyPath: hasPunch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2587929584712949171, guid: e6c9993445d24744e9bc3ca42f8c45a5,
+        type: 3}
+      propertyPath: _punchLungeForce
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2587929583951581994, guid: e6c9993445d24744e9bc3ca42f8c45a5,
+        type: 3}
+      propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2587929583951581992, guid: e6c9993445d24744e9bc3ca42f8c45a5,
+    - target: {fileID: 2587929583951581994, guid: e6c9993445d24744e9bc3ca42f8c45a5,
         type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 83ad350d753a061428797cd6b621c533, type: 2}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2587929583951581994, guid: e6c9993445d24744e9bc3ca42f8c45a5,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6c9993445d24744e9bc3ca42f8c45a5, type: 3}
 --- !u!4 &5005511077679961299 stripped

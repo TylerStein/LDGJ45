@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fa4f543213c1744c93d6446f598a6de, type: 3}
   m_Name: PlayerMovementSettings
   m_EditorClassIdentifier: 
-  groundMoveVelocity: 8
+  groundMoveVelocity: 6
   groundMoveSmoothing: 0.05
   groundStopSmoothing: 0.05
   enableWallJump: 0
-  jumpForce: 600
+  jumpForce: 800
   canMoveInAir: 1
   airMoveSmoothing: 0.05
   dampenAirMovement: 0

@@ -21,14 +21,14 @@ public class ThumperMovementController : MonoBehaviour
     public int TouchingWallDirection { get { return _touchingWallDirection; } }
 
     // Rigidbody's current velocity
-    public Vector2 Velocity { get { return _rigidbody.velocity; } }
+    public Vector2 Velocity { get { return rigidbody.velocity; } }
 
     [SerializeField] public GroundMovementSettings movementSettings;
     [SerializeField] public ThumperSettings thumperSettings;
+    [SerializeField] public new Collider2D collider;
+    [SerializeField] public new Rigidbody2D rigidbody;
 
     [SerializeField] private Transform _transform;
-    [SerializeField] private Collider2D _collider;
-    [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private RaycastHit2D[] _contacts = new RaycastHit2D[3];
     [SerializeField] private Vector2 _currentVelocity = Vector2.zero;
     [SerializeField] private bool _shouldJump = false;
@@ -42,12 +42,12 @@ public class ThumperMovementController : MonoBehaviour
 
     public void Start() {
         if (!_transform) _transform = GetComponent<Transform>();
-        if (!_rigidbody) _rigidbody = GetComponent<Rigidbody2D>();
-        if (!_collider) _collider = GetComponent<BoxCollider2D>();
+        if (!rigidbody) rigidbody = GetComponent<Rigidbody2D>();
+        if (!collider) collider = GetComponent<BoxCollider2D>();
 
-        _rigidbody.isKinematic = false;
-        _rigidbody.simulated = true;
-        _rigidbody.freezeRotation = true;
+        rigidbody.isKinematic = false;
+        rigidbody.simulated = true;
+        rigidbody.freezeRotation = true;
     }
 
     public void FixedUpdate() {
@@ -65,7 +65,7 @@ public class ThumperMovementController : MonoBehaviour
     }
 
     public void Move(float direction) {
-        _lastDirection = Mathf.Sign(_rigidbody.velocity.x);
+        _lastDirection = Mathf.Sign(rigidbody.velocity.x);
 
         // prevent wall sticking
         if (Mathf.Sign(direction) == _touchingWallDirection) {
@@ -78,12 +78,12 @@ public class ThumperMovementController : MonoBehaviour
 
         if (_isGrounded) {
             float desiredDirection = Mathf.Sign(direction);
-            Vector2 targetVelocity = new Vector2(direction * movementSettings.groundMoveVelocity, _rigidbody.velocity.y);
-            _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, targetVelocity, ref _currentVelocity, movementSettings.groundMoveSmoothing);
+            Vector2 targetVelocity = new Vector2(direction * movementSettings.groundMoveVelocity, rigidbody.velocity.y);
+            rigidbody.velocity = Vector2.SmoothDamp(rigidbody.velocity, targetVelocity, ref _currentVelocity, movementSettings.groundMoveSmoothing);
         } else if (movementSettings.canMoveInAir) {
             float desiredDirection = Mathf.Sign(direction);
-            Vector2 targetVelocity = new Vector2(direction * movementSettings.airMoveVelocity, _rigidbody.velocity.y);
-            _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, targetVelocity, ref _currentVelocity, movementSettings.airMoveSmoothing);
+            Vector2 targetVelocity = new Vector2(direction * movementSettings.airMoveVelocity, rigidbody.velocity.y);
+            rigidbody.velocity = Vector2.SmoothDamp(rigidbody.velocity, targetVelocity, ref _currentVelocity, movementSettings.airMoveSmoothing);
         }
     }
 
@@ -91,20 +91,20 @@ public class ThumperMovementController : MonoBehaviour
         if (_shouldJump) {
             _shouldJump = false;
             _isGrounded = false;
-            _rigidbody.AddForce(new Vector2(0f, movementSettings.jumpForce));
+            rigidbody.AddForce(new Vector2(0f, movementSettings.jumpForce));
         }
     }
 
     public void ClearVelocity() {
-        _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, Vector2.zero, ref _currentVelocity, 0.0001f);
+        rigidbody.velocity = Vector2.SmoothDamp(rigidbody.velocity, Vector2.zero, ref _currentVelocity, 0.0001f);
     }
 
     public void ClearVelocityX() {
-        _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, new Vector2(0, _rigidbody.velocity.y), ref _currentVelocity, 0.0001f);
+        rigidbody.velocity = Vector2.SmoothDamp(rigidbody.velocity, new Vector2(0, rigidbody.velocity.y), ref _currentVelocity, 0.0001f);
     }
 
     public void AddForce(Vector2 force) {
-        _rigidbody.AddForce(force, ForceMode2D.Impulse);
+        rigidbody.AddForce(force, ForceMode2D.Impulse);
     }
 
     private void hover() {
@@ -112,27 +112,27 @@ public class ThumperMovementController : MonoBehaviour
         Vector2 targetVelocity = Vector2.zero;
         if (heightDifference > thumperSettings.hoverErrorMargin) {
             // go up
-            targetVelocity = new Vector2(_rigidbody.velocity.x, thumperSettings.hoverHeightSpeed);
+            targetVelocity = new Vector2(rigidbody.velocity.x, thumperSettings.hoverHeightSpeed);
         } else if (heightDifference < -thumperSettings.hoverErrorMargin) {
             // go down
-            targetVelocity = new Vector2(_rigidbody.velocity.x, -thumperSettings.hoverHeightSpeed);
+            targetVelocity = new Vector2(rigidbody.velocity.x, -thumperSettings.hoverHeightSpeed);
         } else {
             // hover here
-            targetVelocity = new Vector2(_rigidbody.velocity.x, 0);
+            targetVelocity = new Vector2(rigidbody.velocity.x, 0);
         }
-        _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, targetVelocity, ref _currentVelocity, thumperSettings.hoverHeightSmoothing);
+        rigidbody.velocity = Vector2.SmoothDamp(rigidbody.velocity, targetVelocity, ref _currentVelocity, thumperSettings.hoverHeightSmoothing);
     }
 
     private void dampenMovement() {
         if (_isGrounded) {
-            Vector2 targetVelocity = new Vector2(0, _rigidbody.velocity.y);
+            Vector2 targetVelocity = new Vector2(0, rigidbody.velocity.y);
             if (_currentVelocity.x < 0.01f) _currentVelocity.Set(0, _currentVelocity.y);
-            _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, targetVelocity, ref _currentVelocity, movementSettings.groundStopSmoothing);
+            rigidbody.velocity = Vector2.SmoothDamp(rigidbody.velocity, targetVelocity, ref _currentVelocity, movementSettings.groundStopSmoothing);
 
         } else if (movementSettings.dampenAirMovement) {
-            Vector2 targetVelocity = new Vector2(0, _rigidbody.velocity.y);
+            Vector2 targetVelocity = new Vector2(0, rigidbody.velocity.y);
             if (_currentVelocity.x < 0.01f) _currentVelocity.Set(0, _currentVelocity.y);
-            _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, targetVelocity, ref _currentVelocity, movementSettings.airStopSmoothing);
+            rigidbody.velocity = Vector2.SmoothDamp(rigidbody.velocity, targetVelocity, ref _currentVelocity, movementSettings.airStopSmoothing);
         }
     }
 
@@ -170,7 +170,7 @@ public class ThumperMovementController : MonoBehaviour
         ContactFilter2D filter = new ContactFilter2D();
         filter.ClearLayerMask();
 
-        int contactCount = _collider.Cast(Vector2.down, filter, _contacts, movementSettings.minGroundDistance);
+        int contactCount = collider.Cast(Vector2.down, filter, _contacts, movementSettings.minGroundDistance);
         for (int i = 0; i < contactCount; i++) {
             if (_contacts[i].collider != null && _contacts[i].transform != transform) {
                 _isBlocked = true;
@@ -191,7 +191,7 @@ public class ThumperMovementController : MonoBehaviour
         filter.layerMask = mask;
 
 
-        int contactCount = _collider.Cast(direction, filter, _contacts, distance);
+        int contactCount = collider.Cast(direction, filter, _contacts, distance);
         for (int i = 0; i < contactCount; i++) {
             if (_contacts[i].collider != null) {
                 return true;

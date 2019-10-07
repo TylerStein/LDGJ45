@@ -233,6 +233,7 @@ MonoBehaviour:
   movementController: {fileID: 338371668184087803}
   attackCollider: {fileID: 8353919743691829789}
   scrapSpawner: {fileID: 4230859243406657085}
+  soundController: {fileID: 8197850928142201588}
 --- !u!114 &338371668184087803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,9 +248,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSettings: {fileID: 11400000, guid: 48efdfebe493a0145bb29f1b47a1e744, type: 2}
   thumperSettings: {fileID: 11400000, guid: e4b506f6e8cc72244867c6409128fb45, type: 2}
+  collider: {fileID: 338371668184087801}
+  rigidbody: {fileID: 338371668184087800}
   _transform: {fileID: 338371668184087781}
-  _collider: {fileID: 338371668184087801}
-  _rigidbody: {fileID: 338371668184087800}
   _currentVelocity: {x: 0, y: 0}
   _shouldJump: 0
   _lastDirection: 1
@@ -492,6 +493,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 338371668184087781}
     m_Modifications:
+    - target: {fileID: 6578238417891660018, guid: b0669786fc51e4f4cbd39b9667c1aaff,
+        type: 3}
+      propertyPath: m_Name
+      value: ScrapBundle
+      objectReference: {fileID: 0}
     - target: {fileID: 8811499383081778002, guid: b0669786fc51e4f4cbd39b9667c1aaff,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -546,11 +552,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6578238417891660018, guid: b0669786fc51e4f4cbd39b9667c1aaff,
-        type: 3}
-      propertyPath: m_Name
-      value: ScrapBundle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0669786fc51e4f4cbd39b9667c1aaff, type: 3}

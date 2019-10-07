@@ -72,7 +72,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: -6226749152307931746, guid: a894c280550b83f4d8f851e25a8a60d1,
     type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.3529412, b: 0.3529412, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -248,9 +248,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSettings: {fileID: 11400000, guid: a0874143c87e04c4d926426bbea1bb8e, type: 2}
+  collider: {fileID: 1087246759}
+  rigidbody: {fileID: 5419120106687090522}
   _transform: {fileID: 5419120106687088807}
-  _collider: {fileID: 1087246759}
-  _rigidbody: {fileID: 5419120106687090522}
   _currentVelocity: {x: 0, y: 0}
   _shouldJump: 0
   _lastDirection: 1
@@ -282,6 +282,7 @@ MonoBehaviour:
     m_Bits: 1024
   movementController: {fileID: 5419120106687090523}
   scrapSpawner: {fileID: 3395651127603143376}
+  soundController: {fileID: 3408656183008090070}
   punchMoveForce: 10
   punchDistance: 0.7
 --- !u!114 &5419120106687088806
@@ -440,6 +441,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5419120106687088807}
     m_Modifications:
+    - target: {fileID: 6578238417891660018, guid: b0669786fc51e4f4cbd39b9667c1aaff,
+        type: 3}
+      propertyPath: m_Name
+      value: ScrapBundle
+      objectReference: {fileID: 0}
     - target: {fileID: 8811499383081778002, guid: b0669786fc51e4f4cbd39b9667c1aaff,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -494,11 +500,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6578238417891660018, guid: b0669786fc51e4f4cbd39b9667c1aaff,
-        type: 3}
-      propertyPath: m_Name
-      value: ScrapBundle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0669786fc51e4f4cbd39b9667c1aaff, type: 3}

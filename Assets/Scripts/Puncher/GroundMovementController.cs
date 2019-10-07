@@ -22,14 +22,13 @@ public class GroundMovementController : MonoBehaviour
     public int TouchingWallDirection { get { return _touchingWallDirection; } }
 
     // Rigidbody's current velocity
-    public Vector2 Velocity { get { return _rigidbody.velocity;  } }
-
+    public Vector2 Velocity { get { return rigidbody.velocity;  } }
 
     [SerializeField] public GroundMovementSettings movementSettings;
+    [SerializeField] public new Collider2D collider;
+    [SerializeField] public new Rigidbody2D rigidbody;
 
     [SerializeField] private Transform _transform;
-    [SerializeField] private Collider2D _collider;
-    [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private RaycastHit2D[] _contacts = new RaycastHit2D[3];
     [SerializeField] private Vector2 _currentVelocity = Vector2.zero;
     [SerializeField] private bool _shouldJump = false;
@@ -43,12 +42,12 @@ public class GroundMovementController : MonoBehaviour
 
     public void Start() {
         if (!_transform) _transform = GetComponent<Transform>();
-        if (!_rigidbody) _rigidbody = GetComponent<Rigidbody2D>();
-        if (!_collider) _collider = GetComponent<BoxCollider2D>();
+        if (!rigidbody) rigidbody = GetComponent<Rigidbody2D>();
+        if (!collider) collider = GetComponent<BoxCollider2D>();
 
-        _rigidbody.isKinematic = false;
-        _rigidbody.simulated = true;
-        _rigidbody.freezeRotation = true;
+        rigidbody.isKinematic = false;
+        rigidbody.simulated = true;
+        rigidbody.freezeRotation = true;
     }
 
     public void FixedUpdate() {
@@ -59,14 +58,16 @@ public class GroundMovementController : MonoBehaviour
     }
 
 
-    public void Jump(bool canJumpInAir = false) {
-        if (_isTouchingCeiling) return;
+    public bool Jump(bool canJumpInAir = false) {
+        if (_isTouchingCeiling) return false;
 
         if (canJumpInAir) _shouldJump = true;
         else if (_isGrounded) _shouldJump = true;
         else if (movementSettings.enableWallJump && _touchingWallDirection != 0) _shouldJump = true;
 
         if ((_isGrounded || canJumpInAir) && !_isTouchingCeiling) _shouldJump = true;
+
+        return _shouldJump;
     }
 
     public void Move(float direction) {
@@ -86,12 +87,12 @@ public class GroundMovementController : MonoBehaviour
 
         if (_isGrounded) {
             float desiredDirection = Mathf.Sign(direction);
-            Vector2 targetVelocity = new Vector2(direction * movementSettings.groundMoveVelocity, _rigidbody.velocity.y);
-            _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, targetVelocity, ref _currentVelocity, movementSettings.groundMoveSmoothing);
+            Vector2 targetVelocity = new Vector2(direction * movementSettings.groundMoveVelocity, rigidbody.velocity.y);
+            rigidbody.velocity = Vector2.SmoothDamp(rigidbody.velocity, targetVelocity, ref _currentVelocity, movementSettings.groundMoveSmoothing);
         } else if (movementSettings.canMoveInAir) {
             float desiredDirection = Mathf.Sign(direction);
-            Vector2 targetVelocity = new Vector2(direction * movementSettings.airMoveVelocity, _rigidbody.velocity.y);
-            _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, targetVelocity, ref _currentVelocity, movementSettings.airMoveSmoothing);
+            Vector2 targetVelocity = new Vector2(direction * movementSettings.airMoveVelocity, rigidbody.velocity.y);
+            rigidbody.velocity = Vector2.SmoothDamp(rigidbody.velocity, targetVelocity, ref _currentVelocity, movementSettings.airMoveSmoothing);
         }
     }
 
@@ -106,10 +107,10 @@ public class GroundMovementController : MonoBehaviour
             if (_isGrounded || _touchingWallDirection == 0) {
                 _isGrounded = false;
                 _isBlocked = false;
-                _rigidbody.AddForce(new Vector2(0f, movementSettings.jumpForce));
+                rigidbody.AddForce(new Vector2(0f, movementSettings.jumpForce));
             } else {
                 Move(-_touchingWallDirection);
-                _rigidbody.AddForce(new Vector2(movementSettings.jumpForce * 0.66f * -_touchingWallDirection, movementSettings.jumpForce * 0.66f));
+                rigidbody.AddForce(new Vector2(movementSettings.jumpForce * 0.66f * -_touchingWallDirection, movementSettings.jumpForce * 0.66f));
                 _isGrounded = false;
                 _isBlocked = false;
                 _touchingWallDirection = 0;
@@ -120,23 +121,23 @@ public class GroundMovementController : MonoBehaviour
 
 
     public void AddForce(Vector2 force) {
-        _rigidbody.AddForce(force, ForceMode2D.Impulse);
+        rigidbody.AddForce(force, ForceMode2D.Impulse);
     }
 
     public void ClearVelocity() {
-        _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, Vector2.zero, ref _currentVelocity, 0.0001f);
+        rigidbody.velocity = Vector2.SmoothDamp(rigidbody.velocity, Vector2.zero, ref _currentVelocity, 0.0001f);
     }
 
     private void dampenMovement() {
         if (_isGrounded) {
-           Vector2 targetVelocity = new Vector2(0, _rigidbody.velocity.y);
+           Vector2 targetVelocity = new Vector2(0, rigidbody.velocity.y);
            if (_currentVelocity.x < 0.01f) _currentVelocity.Set(0, _currentVelocity.y);
-           _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, targetVelocity, ref _currentVelocity, movementSettings.groundStopSmoothing);
+           rigidbody.velocity = Vector2.SmoothDamp(rigidbody.velocity, targetVelocity, ref _currentVelocity, movementSettings.groundStopSmoothing);
 
         } else if (movementSettings.dampenAirMovement) {
-           Vector2 targetVelocity = new Vector2(0, _rigidbody.velocity.y);
+           Vector2 targetVelocity = new Vector2(0, rigidbody.velocity.y);
             if (_currentVelocity.x < 0.01f) _currentVelocity.Set(0, _currentVelocity.y);
-            _rigidbody.velocity = Vector2.SmoothDamp(_rigidbody.velocity, targetVelocity, ref _currentVelocity, movementSettings.airStopSmoothing);
+            rigidbody.velocity = Vector2.SmoothDamp(rigidbody.velocity, targetVelocity, ref _currentVelocity, movementSettings.airStopSmoothing);
         }
     }
 
@@ -170,7 +171,7 @@ public class GroundMovementController : MonoBehaviour
         ContactFilter2D filter = new ContactFilter2D();
         filter.ClearLayerMask();
 
-        int contactCount = _collider.Cast(Vector2.down, filter, _contacts, movementSettings.minGroundDistance);
+        int contactCount = collider.Cast(Vector2.down, filter, _contacts, movementSettings.minGroundDistance);
         for (int i = 0; i < contactCount; i++) {
             if (_contacts[i].collider != null && _contacts[i].transform != transform) {
                 _isBlocked = true;
@@ -188,9 +189,9 @@ public class GroundMovementController : MonoBehaviour
         ContactFilter2D filter = new ContactFilter2D();
         filter.layerMask = mask;
 
-        int contactCount = _collider.Cast(direction, filter, _contacts, distance);
+        int contactCount = collider.Cast(direction, filter, _contacts, distance);
         for (int i = 0; i < contactCount; i++) {
-            if (_contacts[i].collider != null && _contacts[i].collider != _collider) {
+            if (_contacts[i].collider != null && _contacts[i].collider != collider) {
                 return true;
             }
         }

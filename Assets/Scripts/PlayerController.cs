@@ -11,30 +11,38 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public SpriteVFXController vfxController;
     [SerializeField] public CameraController cameraController;
     [SerializeField] public ScrapSpawner scrapSpawner;
+    [SerializeField] public Player_Sound_controller soundController;
 
     public int health = 4;
     [SerializeField] public SpriteRenderer playerSprite;
     [SerializeField] public Animator animator;
 
-    [SerializeField] public bool _lastHadSlam = false;
-    [SerializeField] public bool _lastHadPunch = false;
+    [SerializeField] private bool _lastHadSlam = false;
+    [SerializeField] private bool _lastHadPunch = false;
+    [SerializeField] private bool _hasDied = false;
 
     public void OnSuccessfulAttack(AttackType attackType, EnemyController enemy, Vector2 point) {
         Debug.Log("hit " + enemy.gameObject.name + " with attack " + attackType.ToString());
-        if (attackType == AttackType.Jump) {
+        if (attackType == AttackType.Jump || attackType == AttackType.Slam) {
             Vector2 inDirection = (point - (Vector2)transform.position).normalized;
             Vector2 inNormal = Vector2.up;
             Vector2 reflection = Vector2.Reflect(inDirection, inNormal);
             movementController.AddForce(reflection * 10.0f);
             vfxController.SpawnSwipeVFX(enemy.transform.position, Vector3.zero, Color.red);
+
         } else if (attackType == AttackType.Punch) {
             Vector2 inDirection = (point - (Vector2)transform.position).normalized;
             Vector2 inNormal = Vector2.up;
             Vector2 reflection = Vector2.Reflect(inDirection, inNormal);
             movementController.AddForce(reflection * 2.0f);
             vfxController.SpawnSwipeVFX(enemy.transform.position, Vector3.zero, Color.green);
+            abilityController.hasPunch = true;
+
         }
         cameraController.Shake(0.02f, 0.01f, 0.25f);
+
+        if (enemy is BasicEnemyController) abilityController.hasPunch = true;
+        else if (enemy is ThumperEnemyController) abilityController.hasSlam = true;
     }
 
     public void ReceiveAttack(EnemyController enemy)
@@ -47,19 +55,29 @@ public class PlayerController : MonoBehaviour
             Die();
         } else {
             animator.SetTrigger("Damage");
+            soundController.PlayTakeDamage();
         }
     }
 
     public void Die() {
+        if (_hasDied) return;
+
+        _hasDied = true;
         health = 0;
         uiController.SetHealth(health);
+        soundController.PlayDie();
 
         scrapSpawner.transform.parent = null;
         scrapSpawner.Spawn();
 
         GameStateController.Instance.OnPlayerDie();
+
         animator.enabled = false;
+
         playerSprite.enabled = false;
+        movementController.collider.enabled = false;
+        movementController.rigidbody.simulated = false;
+        movementController.enabled = false;
         enabled = false;
     }
 
@@ -71,6 +89,8 @@ public class PlayerController : MonoBehaviour
 
         animator.SetBool("HasSlam", abilityController.hasSlam);
         animator.SetBool("HasPunch", abilityController.hasPunch);
+
+        _hasDied = false;
     }
 
     // Update is called once per frame
@@ -79,15 +99,21 @@ public class PlayerController : MonoBehaviour
 
         movementController.Move(inputProvider.Horizontal);
 
-        if (inputProvider.JumpDown) movementController.Jump();
+        if (inputProvider.JumpDown) {
+            if (movementController.Jump()) {
+                soundController.PlayJump();
+            }
+        }
 
         if (inputProvider.Attack1) {
             if (abilityController.Punch()) {
                 animator.SetTrigger("Punch");
+                soundController.PlayPunch();
             }
         } else if (inputProvider.Attack2) {
             if (abilityController.Slam()) {
                 animator.SetTrigger("Slam");
+                soundController.PlayPunch();
             }
         }
 

@@ -14,9 +14,11 @@ public class Enemy_Sound_Controller : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void PlayAttack() {
+        audioSource.PlayOneShot(Attack);
+    }
+
+    public void PlayDie() {
+        audioSource.PlayOneShot(Die);
     }
 }
