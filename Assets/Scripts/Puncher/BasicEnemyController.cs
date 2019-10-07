@@ -57,7 +57,8 @@ public class BasicEnemyController : EnemyController
         movementController.AddForce(Vector2.right * movementController.LastDirection * punchMoveForce);
         animator.SetTrigger("Attack");
 
-        vfxController.SpawnSwipeVFX(transform.position, Vector3.zero, Color.white);
+        vfxController.SpawnSwipeVFX(transform.position + new Vector3(movementController.LastDirection/2, 0, 0),
+            Vector3.zero, Color.white, movementController.LastDirection == 1 ? true : false);
 
         soundController.PlayAttack();
 

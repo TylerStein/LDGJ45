@@ -123,14 +123,14 @@ public class GameStateController : MonoBehaviour
         } else if (_gameState == GameState.POSTWIN)
         {
             // post-game win menu RESTART
-            if (Input.GetKeyDown(KeyCode.R) || Input.GetButton("Select"))
+            if (Input.GetKeyDown(KeyCode.R))// || Input.GetButton("Select"))
             {
                 PlayerPrefs.SetInt("hasWon", 0);
                 PlayerPrefs.Save();
                 SceneManager.LoadScene(gameSceneIndex);
             }
             // post-game win menu NEWGAME+
-            if (Input.GetKeyDown(KeyCode.N) || Input.GetButton("Start"))
+            if (Input.GetKeyDown(KeyCode.N))// || Input.GetButton("Start"))
             {
                 PlayerPrefs.SetInt("hasWon", 1);
                 PlayerPrefs.Save();
