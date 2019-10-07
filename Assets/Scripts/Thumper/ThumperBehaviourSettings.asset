@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ThumperBehaviourSettings
   m_EditorClassIdentifier: 
   hoverErrorMargin: 0.5
-  hoverHeight: 5
+  hoverHeight: 6
   hoverHeightSpeed: 5.08
   hoverHeightSmoothing: 0.05
   slamDelay: 4

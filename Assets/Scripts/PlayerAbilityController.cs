@@ -31,17 +31,15 @@ public class PlayerAbilityController : MonoBehaviour
     [SerializeField] private Collider2D[] _overlaps = new Collider2D[4];
     [SerializeField] private RaycastHit2D[] _hits = new RaycastHit2D[4];
     [SerializeField] private bool _waitForNotBlocked = false;
-    [SerializeField] private bool _waitForGrounded = false;
 
     public void Update() {
         controller.movementController.movementSettings.enableWallJump = enableWallJump;
         if (_isSlamming && controller.movementController.IsBlocked) _isSlamming = false;
-        if (controller.movementController.IsGrounded) _waitForGrounded = false;
         if (controller.movementController.IsBlocked) _waitForNotBlocked = false;
     }
 
     public void OnCollisionEnter2D(Collision2D collision) {
-        if (_waitForGrounded || _waitForNotBlocked || controller.movementController.IsGrounded) {
+        if (_waitForNotBlocked || controller.movementController.IsGrounded) {
             return;
         }
 
@@ -55,7 +53,6 @@ public class PlayerAbilityController : MonoBehaviour
                 if (consumer) {
                     consumer.RecieveAttack(_isSlamming ? AttackType.Slam : AttackType.Jump, attackCollider, _hits[i]);
                     if (_isSlamming) _waitForNotBlocked = true;
-                    else _waitForGrounded = true;
                     break;
                 }
             }
