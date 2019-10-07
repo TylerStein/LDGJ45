@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BoxerHeadVulnerable : Vulnerable
 {
-    public override bool testAttack(Vector2 point) {
-        return point.y > transform.position.y;
+    public override bool testAttack(Collider2D source, RaycastHit2D hit) {
+        return source.transform.position.y > transform.position.y;
     }
 }

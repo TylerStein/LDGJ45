@@ -39,6 +39,7 @@ public class GameStateController : MonoBehaviour
 
     public void Awake() {
         GameStateController._instance = this;
+        if (_enemies.Count == 0) _enemies = new List<EnemyController>(FindObjectsOfType<EnemyController>());
         preGameUI.SetActive(true);
         inGameUI.SetActive(false);
         postWinUI.SetActive(false);

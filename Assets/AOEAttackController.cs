@@ -13,6 +13,7 @@ public class AOEAttackController : MonoBehaviour
 {
     [SerializeField] public AOEState State { get { return _state;  } }
 
+    [SerializeField] public EnemyController owner;
     [SerializeField] public Transform rootTransform;
     [SerializeField] public SpriteRenderer spriteRenderer;
     [SerializeField] public CircleCollider2D circleCollider;
@@ -38,7 +39,7 @@ public class AOEAttackController : MonoBehaviour
     private void Start() {
 
         Deactivate();
-        circleCollider.isTrigger = true;
+       // circleCollider.isTrigger = true;
     }
 
     // Update is called once per frame
@@ -55,12 +56,14 @@ public class AOEAttackController : MonoBehaviour
         if (_state == AOEState.GROW) {
             _currentScale = Mathf.SmoothDamp(_currentScale, maxSize, ref _scaleDampenVelocity, growthDampening * Time.deltaTime);
             setScales();
+            testPlayerDistance();
             if (_currentScale >= (maxSize - errorMargin)) {
                 _state = AOEState.STAY;
                 _stayTicker = 0f;
                 _scaleDampenVelocity = 0f;
             }
         } else if (_state == AOEState.STAY) {
+            testPlayerDistance();
             if (_stayTicker < stayDuration) {
                 _stayTicker += Time.deltaTime;
             }
@@ -71,6 +74,7 @@ public class AOEAttackController : MonoBehaviour
         } else if (_state == AOEState.SHRINK) {
             _currentScale = Mathf.SmoothDamp(_currentScale, minSize, ref _scaleDampenVelocity, shrinkDampening * Time.deltaTime);
             setScales();
+            testPlayerDistance();
             if (_currentScale <= (minSize + errorMargin)) {
                 Deactivate();
             }
@@ -84,7 +88,7 @@ public class AOEAttackController : MonoBehaviour
         _scaleDampenVelocity = 0f;
         setScales();
         spriteRenderer.enabled = true;
-        circleCollider.enabled = true;
+       // circleCollider.enabled = true;
     }
 
     public void Deactivate() {
@@ -92,7 +96,7 @@ public class AOEAttackController : MonoBehaviour
         _currentScale = minSize;
         _scaleDampenVelocity = 0f;
         spriteRenderer.enabled = false;
-        circleCollider.enabled = false;
+      // circleCollider.enabled = false;
         _didHitPlayer = false;
         setScales();
     }
@@ -101,12 +105,23 @@ public class AOEAttackController : MonoBehaviour
         rootTransform.localScale = new Vector3(_currentScale, _currentScale, rootTransform.localScale.z);
     }
 
-    private void OnTriggerStay(Collider other) {
-        if (other.gameObject.tag == "Player") {
-            if (!_didHitPlayer) {
-                Debug.Log("oof bud");
+    private void testPlayerDistance() {
+        if (!_didHitPlayer) {
+            float distance = Vector3.Distance(rootTransform.position, owner.awarenessProvider.Player.transform.position);
+            Debug.DrawRay(rootTransform.position, Vector3.left * _currentScale, Color.white);
+            if (distance <= _currentScale * 0.5f) {
                 _didHitPlayer = true;
+                owner.awarenessProvider.Player.ReceiveAttack(owner);
             }
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        //if (other.gameObject.tag == "Player") {
+        //    if (!_didHitPlayer) {
+        //        owner.awarenessProvider.Player.ReceiveAttack(owner);
+        //        _didHitPlayer = true;
+        //    }
+        //}
     }
 }

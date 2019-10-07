@@ -36,6 +36,7 @@ public class BasicEnemyController : EnemyController
         scrapSpawner.transform.parent = null;
         scrapSpawner.Spawn();
 
+        GameStateController.Instance.OnEnemyDie(this);
         Destroy(gameObject, 0.1f);
     }
 

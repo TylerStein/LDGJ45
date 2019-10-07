@@ -35,17 +35,13 @@ public class PlayerAbilityController : MonoBehaviour
     public void Update() {
         controller.movementController.movementSettings.enableWallJump = enableWallJump;
         if (_isSlamming && controller.movementController.IsBlocked) _isSlamming = false;
+        if (controller.movementController.IsGrounded) _waitForGrounded = false;
+        if (controller.movementController.IsBlocked) _waitForNotBlocked = false;
     }
 
     public void OnCollisionEnter2D(Collision2D collision) {
-        if (controller.movementController.IsGrounded) {
-            _waitForGrounded = false;
+        if (_waitForGrounded || _waitForNotBlocked || controller.movementController.IsGrounded) {
             return;
-        } else if (_waitForGrounded) return;
-
-        if (_waitForNotBlocked) {
-            if (controller.movementController.IsBlocked) return;
-            else _waitForNotBlocked = false;
         }
 
         ContactFilter2D filter = new ContactFilter2D();
@@ -56,7 +52,7 @@ public class PlayerAbilityController : MonoBehaviour
             if (_hits[i].collider.gameObject.tag == "Enemy") {
                 Vulnerable consumer = _hits[i].collider.gameObject.GetComponent<Vulnerable>();
                 if (consumer) {
-                    consumer.RecieveAttack(_isSlamming ? AttackType.Slam : AttackType.Jump, _hits[i].point);
+                    consumer.RecieveAttack(_isSlamming ? AttackType.Slam : AttackType.Jump, attackCollider, _hits[i]);
                     if (_isSlamming) _waitForNotBlocked = true;
                     else _waitForGrounded = true;
                     break;
@@ -76,7 +72,7 @@ public class PlayerAbilityController : MonoBehaviour
             if (_hits[i].collider.gameObject.tag == "Enemy") {
                 Vulnerable consumer = _hits[i].collider.gameObject.GetComponent<Vulnerable>();
                 if (consumer) {
-                    consumer.RecieveAttack(AttackType.Punch, _hits[i].point);
+                    consumer.RecieveAttack(AttackType.Punch, attackCollider, _hits[i]);
                     Debug.DrawLine(transform.position, consumer.transform.position, Color.red, 2.0f);
                     return true;
                 }

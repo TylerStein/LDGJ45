@@ -16,7 +16,7 @@ public abstract class Vulnerable : MonoBehaviour
     [SerializeField] public new Collider2D collider;
     [SerializeField] public AttackType[] vulnerableTo = { AttackType.Jump };
 
-    public abstract bool testAttack(Vector2 point);
+    public abstract bool testAttack(Collider2D source, RaycastHit2D hit);
 
     public void Awake() {
         if(!collider) collider = GetComponent<Collider2D>();
@@ -31,7 +31,7 @@ public abstract class Vulnerable : MonoBehaviour
         }
     }
 
-    public bool RecieveAttack(AttackType incomingType, Vector2 point)
+    public bool RecieveAttack(AttackType incomingType, Collider2D source, RaycastHit2D hit)
     {
         bool inList = false;
         for (int i = 0; i < vulnerableTo.Length; i++) {
@@ -40,8 +40,8 @@ public abstract class Vulnerable : MonoBehaviour
                 break;
             }
         }
-        if (inList && testAttack(point)) {
-            owner.ReceiveAttack(incomingType, collider, point);
+        if (inList && testAttack(source, hit)) {
+            owner.ReceiveAttack(incomingType, collider, hit.point);
             return true;
         }
         return false;
