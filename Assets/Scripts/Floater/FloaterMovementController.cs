@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FloaterMovementControllerr : MonoBehaviour
+public class FloaterMovementController : MonoBehaviour
 {
     public bool IsAtHoverHeight { get { return Mathf.Abs(movementSettings.hoverHeight - transform.position.y) < movementSettings.hoverErrorMargin; } }
 

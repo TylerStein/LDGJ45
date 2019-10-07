@@ -11,7 +11,7 @@ public enum FloatBlastState
 
 public class FloatBlastEnemyController : EnemyController
 {
-    [SerializeField] public FloaterMovementControllerr movementController;
+    [SerializeField] public FloaterMovementController movementController;
     [SerializeField] public AOEAttackController attackController;
 
     [SerializeField] public FloatBlastState state;
@@ -19,8 +19,15 @@ public class FloatBlastEnemyController : EnemyController
 
 
     public void Awake() {
-        if (!movementController) movementController = GetComponent<FloaterMovementControllerr>();
+        if (!movementController) movementController = GetComponent<FloaterMovementController>();
         if (!awarenessProvider) awarenessProvider = GetComponent<AwarenessProvider>();
+
+        Dictionary<StateType, BaseState> states = new Dictionary<StateType, BaseState>()
+        {
+            {StateType.Patrol, new FloaterPatrolState(this) },
+            {StateType.Attack, new FloaterAttackState(this) }
+        };
+        stateMachine.SetStates(states);
     }
 
     public override void GiveAttack() {
@@ -36,22 +43,6 @@ public class FloatBlastEnemyController : EnemyController
     private void Update() {
         if (GameStateController.Instance.IsPlaying == false) return;
 
-        if (state == FloatBlastState.MOVING) {
-            movementController.Move(moveDirection);
-            if (movementController.TouchingWallDirection == moveDirection) {
-                // hit a wall, do the thing
-                state = FloatBlastState.ATTACK;
-            }
-        } else if (state == FloatBlastState.ATTACK) {
-            // begin attack and wait
-            attackController.Activate();
-            state = FloatBlastState.WAITING;
-        } else if (state == FloatBlastState.WAITING) {
-            if (attackController.State == AOEState.IDLE) {
-                // attack complete
-                state = FloatBlastState.MOVING;
-                moveDirection = -moveDirection;
-            }
-        }
+        stateMachine.Update();
     }
 }
