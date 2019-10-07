@@ -16,6 +16,10 @@ public class GroundAttackState : BaseState
         this.controller = controller;
         awarenessProvider = controller.awarenessProvider;
     }
+    public override void Activate()
+    {
+        return;
+    }
 
     public override StateType Update()
     {

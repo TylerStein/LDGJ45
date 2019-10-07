@@ -2,34 +2,45 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GroundPatrolState : BaseState
+public class ThumperPatrolState : BaseState
 {
     protected AwarenessProvider awarenessProvider;
-    protected GroundMovementController movementController;
+    protected ThumperMovementController movementController;
     [SerializeField] private int moveDirection = 1;
     [SerializeField] private Vector3 origPosition;
-    [SerializeField] private float chaseRange = 2f;
     [SerializeField] private float patrolRange = 2.5f;
+    [SerializeField] private float slamTick = 0f;
 
-    public GroundPatrolState(EnemyController controller) : base(controller.gameObject)
+    public ThumperPatrolState(EnemyController controller) : base(controller.gameObject)
     {
         type = StateType.Patrol;
         awarenessProvider = controller.awarenessProvider;
-        movementController = gameObject.GetComponent<GroundMovementController>();
+        movementController = gameObject.GetComponent<ThumperMovementController>();
         origPosition = movementController.transform.position;
     }
 
     public override void Activate()
     {
-        origPosition = movementController.transform.position;
+        return;
     }
 
     public override StateType Update()
     {
-        float distanceToPlayer = awarenessProvider.GetHorizontalDistanceToPlayer();
-        if (Mathf.Abs(distanceToPlayer) < chaseRange)
+        if (slamTick < movementController.thumperSettings.slamDelay && movementController.IsAtHoverHeight)
         {
-            return StateType.Chase;
+            slamTick += Time.deltaTime;
+            if (slamTick >= movementController.thumperSettings.slamDelay)
+            {
+                slamTick = movementController.thumperSettings.slamDelay;
+            }
+        }
+
+        float distanceToPlayer = awarenessProvider.GetHorizontalDistanceToPlayer();
+        if (Mathf.Abs(distanceToPlayer) < movementController.thumperSettings.slamMaxHorizontalDistance
+            && movementController.IsAtHoverHeight && slamTick == movementController.thumperSettings.slamDelay)
+        {
+            slamTick = 0f;
+            return StateType.Attack;
         }
 
         float distanceToOrigin = (origPosition - movementController.transform.position).x;

@@ -18,6 +18,10 @@ public class GroundChaseState : BaseState
         awarenessProvider = controller.awarenessProvider;
         movementController = gameObject.GetComponent<GroundMovementController>();
     }
+    public override void Activate()
+    {
+        return;
+    }
 
     public override StateType Update()
     {

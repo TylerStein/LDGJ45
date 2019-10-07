@@ -13,13 +13,15 @@ public class BasicEnemyController : EnemyController
     
     private void Awake()
     {
+        if (!movementController) movementController = GetComponent<GroundMovementController>();
+        if (!awarenessProvider) awarenessProvider = GetComponent<AwarenessProvider>();
+
         Dictionary<StateType, BaseState> states = new Dictionary<StateType, BaseState>()
         {
             {StateType.Patrol, new GroundPatrolState(this) },
             {StateType.Chase, new GroundChaseState(this) },
             {StateType.Attack, new GroundAttackState(this) }
         };
-
         stateMachine.SetStates(states);
     }
 

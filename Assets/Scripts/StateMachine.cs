@@ -26,7 +26,8 @@ public class StateMachine
         {
             StateType oldState = currentState.type;
             currentState = availableStates[nextState];
-            Debug.Log("State: " + oldState + " -> " + currentState.type);
+            currentState.Activate();
+            Debug.Log(currentState.StateGameObject.name + " state: " + oldState + " -> " + currentState.type);
         }
     }
 
