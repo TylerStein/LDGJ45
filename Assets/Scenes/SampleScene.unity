@@ -259,7 +259,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 2e-44, z: 4.983e-42, w: 6e-44}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -463,6 +463,10 @@ MonoBehaviour:
   _elevatorTransform: {fileID: 5005511077679961299}
   _worldRoot: {fileID: 5005511077926790547}
   _ceilingCollider: {fileID: 5005511079503459440}
+  enemyColors:
+  - {r: 1, g: 0.3820755, b: 0.3820755, a: 1}
+  - {r: 0.3537736, g: 1, b: 0.35608405, a: 1}
+  - {r: 0.28773582, g: 0.49816626, b: 1, a: 1}
   _winStateWorldTarget: {x: 0, y: -20}
   _inGameWorldTarget: {x: 0, y: 0}
   _preGameWorldPosition: {x: 0, y: 20}

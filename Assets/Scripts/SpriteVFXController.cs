@@ -9,6 +9,6 @@ public class SpriteVFXController : MonoBehaviour
     public void SpawnSwipeVFX(Vector3 worldPosition, Vector3 rotation, Color spriteColor) {
         GameObject vfx = Instantiate(swipeVFX, worldPosition, Quaternion.Euler(rotation));
         vfx.GetComponent<SpriteRenderer>().color = spriteColor;
-        Debug.Log("Created VFX", vfx);
+        //Debug.Log("Created VFX", vfx);
     }
 }

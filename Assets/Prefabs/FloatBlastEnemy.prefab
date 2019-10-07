@@ -478,7 +478,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 46326270501605726, guid: 3483fd47433712a4aacb5003d574c260, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.28773582, g: 0.49816626, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -553,7 +553,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   owner: {fileID: 1911530782956998792}
   collider: {fileID: 507631813}
-  vulnerableTo: 02000000
+  vulnerableTo: 0
 --- !u!58 &507631813
 CircleCollider2D:
   m_ObjectHideFlags: 0

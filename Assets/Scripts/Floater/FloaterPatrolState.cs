@@ -36,7 +36,7 @@ public class FloaterPatrolState : BaseState
             return StateType.Attack;
         }        
 
-        controller.animator.SetFloat("Velocity", Mathf.Abs(movementController.Velocity.x));
+        //controller.animator.SetFloat("Velocity", Mathf.Abs(movementController.Velocity.x));
         controller.spriteRenderer.flipX = moveDirection > 0;
 
         return type;
