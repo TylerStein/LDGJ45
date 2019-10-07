@@ -22,7 +22,7 @@ MonoBehaviour:
   dampenAirMovement: 0
   airStopSmoothing: 0.05
   airMoveVelocity: 3
-  minGroundDistance: 0.01
+  minGroundDistance: 0.05
   minCeilingDistance: 0.01
   minWallDistance: 0.01
   groundLayer:
