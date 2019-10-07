@@ -16,7 +16,7 @@ MonoBehaviour:
   groundMoveSmoothing: 0.05
   groundStopSmoothing: 0.05
   enableWallJump: 0
-  jumpForce: 800
+  jumpForce: 700
   canMoveInAir: 1
   airMoveSmoothing: 0.05
   dampenAirMovement: 0
