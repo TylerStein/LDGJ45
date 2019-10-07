@@ -35,6 +35,8 @@ public class GameStateController : MonoBehaviour
 
     [SerializeField] private Collider2D _ceilingCollider;
 
+    [SerializeField] private Color[] enemyColors;
+
     [SerializeField] private Vector2 _winStateWorldTarget = new Vector2(0f, -20f);
     [SerializeField] private Vector2 _inGameWorldTarget = new Vector2(0f, 0f);
     [SerializeField] private Vector2 _preGameWorldPosition = new Vector2(0, 20f);
@@ -179,14 +181,17 @@ public class GameStateController : MonoBehaviour
         foreach (EnemyController en in jumpList)
         {
             en.vulnerableTo = (AttackType)jump;
+            en.spriteRenderer.color = enemyColors[jump];
         }
         foreach (EnemyController en in punchList)
         {
             en.vulnerableTo = (AttackType)punch;
+            en.spriteRenderer.color = enemyColors[punch];
         }
         foreach (EnemyController en in slamList)
         {
             en.vulnerableTo = (AttackType)slam;
+            en.spriteRenderer.color = enemyColors[slam];
         }
 
         player.abilityController.hasPunch = true;
