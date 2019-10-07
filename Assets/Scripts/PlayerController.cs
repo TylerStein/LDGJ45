@@ -102,6 +102,11 @@ public class PlayerController : MonoBehaviour
         if (inputProvider.JumpDown) {
             if (movementController.Jump()) {
                 soundController.PlayJump();
+            } else {
+                if (abilityController.Slam()) {
+                    animator.SetTrigger("Slam");
+                    soundController.PlayPunch();
+                }
             }
         }
 
@@ -110,12 +115,8 @@ public class PlayerController : MonoBehaviour
                 animator.SetTrigger("Punch");
                 soundController.PlayPunch();
             }
-        } else if (inputProvider.Attack2) {
-            if (abilityController.Slam()) {
-                animator.SetTrigger("Slam");
-                soundController.PlayPunch();
-            }
-        }
+        } 
+
 
         //animation
         animator.SetFloat("VelocityX", Mathf.Abs(movementController.Velocity.x));
