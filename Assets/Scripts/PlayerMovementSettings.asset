@@ -15,9 +15,11 @@ MonoBehaviour:
   groundMoveVelocity: 8
   groundMoveSmoothing: 0.05
   groundStopSmoothing: 0.05
+  enableWallJump: 0
   jumpForce: 600
   canMoveInAir: 1
   airMoveSmoothing: 0.05
+  dampenAirMovement: 0
   airStopSmoothing: 0.05
   airMoveVelocity: 8
   minGroundDistance: 0.01

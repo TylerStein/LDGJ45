@@ -61,7 +61,6 @@ public class ThumperMovementController : MonoBehaviour
         hover();
 
         updateTouchingCeiling();
-        updateTouchingGround();
         updateBlocked();
     }
 
@@ -164,22 +163,35 @@ public class ThumperMovementController : MonoBehaviour
     }
 
     private void updateTouchingGround() {
-        _isGrounded = isTouching(Vector2.down, movementSettings.minGroundDistance, movementSettings.groundLayer);
+       // _isGrounded = isTouching(Vector2.down, movementSettings.minGroundDistance, movementSettings.groundLayer);
     }
 
     private void updateBlocked() {
-        int contactCount = Physics2D.BoxCastNonAlloc(_transform.position, Vector2.one * 0.99f, 0, Vector2.down, _contacts, movementSettings.minGroundDistance * 1.1f, 0);
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.ClearLayerMask();
+
+        int contactCount = _collider.Cast(Vector2.down, filter, _contacts, movementSettings.minGroundDistance);
         for (int i = 0; i < contactCount; i++) {
             if (_contacts[i].collider != null && _contacts[i].transform != transform) {
                 _isBlocked = true;
+                if (_contacts[i].collider.tag == "Ground") {
+                    _isGrounded = true;
+                } else {
+                    _isGrounded = false;
+                }
                 return;
             }
         }
+        _isGrounded = false;
         _isBlocked = false;
     }
 
     private bool isTouching(Vector2 direction, float distance, int mask = 1 << 0) {
-        int contactCount = Physics2D.BoxCastNonAlloc(_transform.position, Vector2.one * 0.99f, 0, direction, _contacts, distance, mask);
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.layerMask = mask;
+
+
+        int contactCount = _collider.Cast(direction, filter, _contacts, distance);
         for (int i = 0; i < contactCount; i++) {
             if (_contacts[i].collider != null) {
                 return true;
