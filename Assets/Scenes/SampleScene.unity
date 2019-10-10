@@ -973,7 +973,7 @@ PrefabInstance:
     - target: {fileID: 2587929584712949171, guid: e6c9993445d24744e9bc3ca42f8c45a5,
         type: 3}
       propertyPath: _punchLungeForce
-      value: 12
+      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 2587929583951581994, guid: e6c9993445d24744e9bc3ca42f8c45a5,
         type: 3}
@@ -1087,11 +1087,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5019517172541070981, guid: 6c7d156de2e6a0745804783dbfc79196,
-        type: 3}
-      propertyPath: field of view
-      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c7d156de2e6a0745804783dbfc79196, type: 3}

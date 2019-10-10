@@ -64,7 +64,8 @@ public class PlayerAbilityController : MonoBehaviour
     public bool Punch() {
         if (!hasPunch) return false;
         Vector2 direction = Vector2.right * controller.movementController.LastDirection;
-        controller.movementController.AddForce(direction * _punchLungeForce);
+        float lungeForce = controller.movementController.IsGrounded ? _punchLungeForce : _punchLungeForce * 0.1f;
+        controller.movementController.AddForce(direction * lungeForce);
         int contacts = Physics2D.BoxCastNonAlloc(transform.position, Vector2.one * 0.75f, 0, direction, _hits, _punchDistance, enemyLayerMask);
         for (int i = 0; i < contacts; i++) {
             if (_hits[i].collider.gameObject.tag == "Enemy") {
