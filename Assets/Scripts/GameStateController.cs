@@ -72,13 +72,13 @@ public class GameStateController : MonoBehaviour
     }
 
     public void Update() {
-        if (Input.GetButtonDown("Escape") && Application.platform != RuntimePlatform.WebGLPlayer) {
+        if (inputProvider.EscapeDown && Application.platform != RuntimePlatform.WebGLPlayer) {
             Application.Quit();
         }
 
         if (_gameState == GameState.PREGAME) {
             // pre-game menu
-            if (Input.GetKeyDown(KeyCode.R) || Input.GetButtonDown("Select")) {
+            if (inputProvider.StartDown) {
                 preGameUI.SetActive(false);
                 inGameUI.SetActive(true);
                 PrepareForAnimation();
@@ -127,14 +127,14 @@ public class GameStateController : MonoBehaviour
         } else if (_gameState == GameState.POSTWIN)
         {
             // post-game win menu RESTART
-            if (Input.GetKeyDown(KeyCode.R) || Input.GetButtonDown("Select"))
+            if (inputProvider.StartDown)
             {
                 PlayerPrefs.SetInt("hasWon", 0);
                 PlayerPrefs.Save();
                 SceneManager.LoadScene(gameSceneIndex);
             }
             // post-game win menu NEWGAME+
-            if (Input.GetKeyDown(KeyCode.N) || Input.GetButtonDown("Start"))
+            if (inputProvider.SelectDown)
             {
                 PlayerPrefs.SetInt("hasWon", 1);
                 PlayerPrefs.Save();
@@ -142,7 +142,7 @@ public class GameStateController : MonoBehaviour
             }
         } else if (_gameState == GameState.LOSE) {
             // post-game lose menu
-            if (Input.GetKeyDown(KeyCode.R) || Input.GetButtonDown("Select")) {
+            if (inputProvider.StartDown) {
                 SceneManager.LoadScene(gameSceneIndex);
             }
         }

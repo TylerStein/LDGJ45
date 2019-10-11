@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (inputProvider.Attack1 && punchTimer <= 0) {
+        if (inputProvider.PunchDown && punchTimer <= 0) {
             if (abilityController.Punch()) {
                 punchTimer = abilityController._punchCooldown;
                 animator.SetTrigger("Punch");
