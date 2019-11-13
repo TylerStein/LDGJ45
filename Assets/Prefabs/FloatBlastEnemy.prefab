@@ -56,6 +56,7 @@ MonoBehaviour:
   awarenessProvider: {fileID: 1911530782956998795}
   spriteRenderer: {fileID: 1911530784732955840}
   animator: {fileID: 1911530784732955838}
+  vfxController: {fileID: 0}
   vulnerableTo: 2
   movementController: {fileID: 1911530782956998794}
   attackController: {fileID: 1911530783656929387}
@@ -372,9 +373,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingLayerID: 703973
+  m_SortingLayer: 3
+  m_SortingOrder: 6
   m_Sprite: {fileID: 21300000, guid: 1b68de74cf0269b4ea16afee5d850431, type: 3}
   m_Color: {r: 0, g: 0.9008863, b: 1, a: 0.7058824}
   m_FlipX: 0
