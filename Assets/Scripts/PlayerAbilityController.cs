@@ -18,6 +18,7 @@ public class PlayerAbilityController : MonoBehaviour
     [SerializeField] public bool hasPunch = true;
     [SerializeField] private float _punchDistance = 1.5f;
     [SerializeField] private float _punchLungeForce = 0.5f;
+    [SerializeField] public float _airPunchLunchForce = 0.25f;
     [SerializeField] public float _punchCooldown = 0.5f;
 
     [Header("Slam")]
@@ -64,7 +65,7 @@ public class PlayerAbilityController : MonoBehaviour
     public bool Punch() {
         if (!hasPunch) return false;
         Vector2 direction = Vector2.right * controller.movementController.LastDirection;
-        float lungeForce = controller.movementController.IsGrounded ? _punchLungeForce : _punchLungeForce * 0.1f;
+        float lungeForce = controller.movementController.IsBlocked ? _punchLungeForce : _airPunchLunchForce;
         controller.movementController.AddForce(direction * lungeForce);
         int contacts = Physics2D.BoxCastNonAlloc(transform.position, Vector2.one * 0.75f, 0, direction, _hits, _punchDistance, enemyLayerMask);
         for (int i = 0; i < contacts; i++) {
