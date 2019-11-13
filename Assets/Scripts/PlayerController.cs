@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public CameraController cameraController;
     [SerializeField] public ScrapSpawner scrapSpawner;
     [SerializeField] public Player_Sound_controller soundController;
+    [SerializeField] public InfoPanelController infoPanelController;
 
     public int health = 4;
     [SerializeField] public SpriteRenderer playerSprite;
@@ -42,8 +43,13 @@ public class PlayerController : MonoBehaviour
         }
         cameraController.Shake(0.02f, 0.01f, 0.25f);
 
-        if (enemy is BasicEnemyController) abilityController.hasPunch = true;
-        else if (enemy is ThumperEnemyController) abilityController.hasSlam = true;
+        if (enemy is BasicEnemyController) {
+            if (abilityController.hasPunch != true) infoPanelController.Display("SHIFT / B to Punch");
+            abilityController.hasPunch = true;
+        } else if (enemy is ThumperEnemyController) {
+            if (abilityController.hasSlam != true) infoPanelController.Display("SPACE / A in the Air to Slam");
+            abilityController.hasSlam = true;
+        }
     }
 
     public void ReceiveAttack(EnemyController enemy)
